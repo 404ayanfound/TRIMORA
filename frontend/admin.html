@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - TRIMORA</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="TRIMORA Logo">
+        </a>
+
+        <div class="admin-title">Admin Panel</div>
+
+        <a href="login.html" class="logout-btn">Logout</a>
+    </header>
+
+    <main class="dashboard">
+
+        <!-- Welcome Section -->
+        <section class="welcome">
+            <p>TRIMORA ADMINISTRATION</p>
+            <h1>Welcome back, Admin 👋</h1>
+            <span>Manage your shop, appointments and team.</span>
+        </section>
+
+        <!-- Summary Cards -->
+        <section class="stats">
+
+            <div class="stat-card">
+                <span>📋</span>
+                <div>
+                    <h2 id="total-count">0</h2>
+                    <p>Total Appointments</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span>⏳</span>
+                <div>
+                    <h2 id="pending-count">0</h2>
+                    <p>Pending Appointments</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span>✂️</span>
+                <div>
+                    <h2 id="barber-count">0</h2>
+                    <p>Total Barbers</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span>₹</span>
+                <div>
+                    <h2 id="payment-total">₹0</h2>
+                    <p>Recorded Payments</p>
+                </div>
+            </div>
+        </section>
+        <!-- Appointments -->
+        <section class="admin-section" id="appointments">
+            <div class="section-heading">
+                <div>
+                    <p>BOOKING MANAGEMENT</p>
+                    <h2>All Appointments</h2>
+                </div>
+
+                <select id="appointment-filter">
+                    <option value="all">All Appointments</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Service</th>
+                            <th>Barber</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Queue</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="appointment-table">
+                        <tr>
+                            <td colspan="8">No appointments available.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Barber Management -->
+        <section class="admin-section" id="barbers">
+            <div class="section-heading">
+                <div>
+                    <p>TEAM MANAGEMENT</p>
+                    <h2>Manage Barbers</h2>
+                </div>
+
+                <button type="button" class="add-btn" id="add-barber-btn">
+                    + Add Barber
+                </button>
+            </div>
+
+            <div id="barber-list" class="management-list">
+                <!-- Barber list will be added here -->
+            </div>
+        </section>
+
+        <!-- Service Management -->
+        <section class="admin-section" id="services">
+            <div class="section-heading">
+                <div>
+                    <p>SERVICE MANAGEMENT</p>
+                    <h2>Manage Services</h2>
+                </div>
+
+                <button type="button" class="add-btn" id="add-service-btn">
+                    + Add Service
+                </button>
+            </div>
+
+            <div id="service-list" class="management-list">
+                <!-- Service list will be added here -->
+            </div>
+        </section>
+
+        <!-- Customer Management -->
+        <section class="admin-section" id="customers">
+            <div class="section-heading">
+                <div>
+                    <p>CUSTOMER MANAGEMENT</p>
+                    <h2>All Customers</h2>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Total Bookings</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="customer-table">
+                        <tr>
+                            <td colspan="3">No customers available.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="images/logo.png" alt="TRIMORA Logo">
+                <p>Smart barber appointments.<br>Better grooming, less waiting.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="index.html#services">Services</a>
+                <a href="index.html#about">About</a>
+                <a href="index.html#contact">Contact</a>
+                <a href="book.html">Book Appointment</a>
+                <a href="barber.html">barber dashboard</a>
+                <a href="admin.html">admin dashboard</a>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact</h3>
+                <p>📍 Raipur, Chhattisgarh</p>
+                <p>✉️ support@trimora.com</p>
+                <p>☎️ +91 98765 43210</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 TRIMORA. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

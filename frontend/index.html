@@ -1,1 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRIMORA</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
+    <header>
+        <a href="#home" class="logo">
+            <img src="images/logo.png" alt="TRIMORA Logo">
+        </a>
+
+        <nav id="nav-menu">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <a href="login.html" class="mobile-login">Login</a>
+        </nav>
+
+        <a href="login.html" class="login-btn">Login</a>
+        <button class="menu-toggle" id="menu-toggle">☰</button>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <p>SMART BARBER APPOINTMENTS</p>
+            <h1>Your Style.<br>Your Time.</h1>
+            <p>Book your barber appointment without waiting.</p>
+            <button onclick="window.location.href='book.html'">Book Now ➜</button>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="section-title">
+            <p>OUR SERVICES</p>
+            <h2>Choose Your Style</h2>
+        </div>
+
+        <div class="service-container">
+            <div class="service-card">
+                <img src="images/haircut.jpg" alt="Haircut">
+                <span>01</span>
+                <h3>Haircut</h3>
+                <p>Classic and modern hairstyles for your look.</p>
+                <strong>₹150</strong>
+            </div>
+
+            <div class="service-card">
+                <img src="images/beard.jpg" alt="Beard Trim">
+                <span>02</span>
+                <h3>Beard Trim</h3>
+                <p>Clean and sharp beard styling.</p>
+                <strong>₹100</strong>
+            </div>
+
+            <div class="service-card">
+                <img src="images/hair & beard.jpg" alt="Hair + Beard">
+                <span>03</span>
+                <h3>Hair + Beard</h3>
+                <p>Complete grooming for a fresh look.</p>
+                <strong>₹200</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="about-overlay"></div>
+
+        <div class="about-content">
+            <p class="about-label">WHY TRIMORA</p>
+            <h2>Groom better.<br><span>Wait less.</span></h2>
+            <p class="about-text">
+                TRIMORA makes barber appointments simple, helping you choose
+                your service and time without unnecessary waiting.
+            </p>
+        </div>
+
+        <div class="about-points">
+            <div class="about-point">
+                <span>01</span>
+                <div>
+                    <h3>Easy Booking</h3>
+                    <p>Book your preferred service and time easily.</p>
+                </div>
+            </div>
+
+            <div class="about-point">
+                <span>02</span>
+                <div>
+                    <h3>Less Waiting</h3>
+                    <p>Know your appointment time before you visit.</p>
+                </div>
+            </div>
+
+            <div class="about-point">
+                <span>03</span>
+                <div>
+                    <h3>Better Grooming</h3>
+                    <p>Choose the right service for your style.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="contact-overlay"></div>
+
+        <div class="contact-content">
+            <div class="contact-info">
+                <p class="contact-label">GET IN TOUCH</p>
+
+                <h2>Let's talk about<br><span>your grooming.</span></h2>
+
+                <p class="contact-text">
+                    Have a question or need help with your appointment?
+                    Reach out to TRIMORA and we'll be happy to help.
+                </p>
+
+                <div class="contact-details">
+                    <div>
+                        <span>LOCATION</span>
+                        <p>Raipur, Chhattisgarh</p>
+                    </div>
+
+                    <div>
+                        <span>EMAIL</span>
+                        <p>support@trimora.com</p>
+                    </div>
+
+                    <div>
+                        <span>PHONE</span>
+                        <p>+91 98765 43210</p>
+                    </div>
+                </div>
+            </div>
+
+            <form class="contact-form">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit">Send Message ➜</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="images/logo.png" alt="TRIMORA Logo">
+                <p>Smart barber appointments.<br>Better grooming, less waiting.</p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="#home">Home</a>
+                <a href="#services">Services</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <a href="book.html">Book Appointment</a>
+                <a href="user.html">user dashboard</a>
+                <a href="barber.html">barber dashboard</a>
+                <a href="admin.html">admin dashboard</a>
+            </div>
+
+            <div class="footer-contact">
+                <h3>Contact</h3>
+                <p>📍 Raipur, Chhattisgarh</p>
+                <p>✉️ support@trimora.com</p>
+                <p>☎️ +91 98765 43210</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 TRIMORA. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

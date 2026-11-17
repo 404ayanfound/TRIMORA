@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barber Dashboard - TRIMORA</title>
+    <link rel="stylesheet" href="css/barber.css">
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="TRIMORA Logo">
+        </a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="index.html#services">Services</a>
+            <a href="index.html#about">About</a>
+            <a href="index.html#contact">Contact</a>
+        </nav>
+        <a href="login.html" class="logout-btn">Logout</a>
+    </header>
+    <main class="dashboard">
+        <section class="welcome">
+            <p>TRIMORA BARBER PANEL</p>
+            <h1>Welcome back, <span id="barber-name">Barber</span> 👋</h1>
+            <span>Manage your appointments and customer queue.</span>
+        </section>
+
+        <section class="stats">
+            <div class="stat-card">
+               <span>📋</span>
+                <div>
+                    <h2 id="total-count">0</h2>
+                    <p>Total Appointments</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span>⏳</span>
+                <div>
+                    <h2 id="pending-count">0</h2>
+                    <p>Pending</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span>✅</span>
+                <div>
+                    <h2 id="completed-count">0</h2>
+                    <p>Completed</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="appointments">
+            <div class="section-heading">
+                <div>
+                    <p>YOUR WORK</p>
+                    <h2>Appointments</h2>
+                </div>
+
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                    <button class="filter-btn" data-filter="cancelled">Cancelled</button>
+                </div>
+            </div>
+
+            <div class="appointment-list" id="appointment-list"></div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="images/logo.png" alt="TRIMORA Logo">
+                <p>Smart barber appointments.<br>Better grooming, less waiting.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="index.html#services">Services</a>
+                <a href="index.html#about">About</a>
+                <a href="index.html#contact">Contact</a>
+                <a href="book.html">Book Appointment</a>
+                <a href="barber.html">barber dashboard</a>
+                <a href="admin.html">admin dashboard</a>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact</h3>
+                <p>📍 Raipur, Chhattisgarh</p>
+                <p>✉️ support@trimora.com</p>
+                <p>☎️ +91 98765 43210</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 TRIMORA. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="js/barber.js"></script>
+</body>
+</html>
