@@ -1,0 +1,356 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0F172A;
+    color: #F1F5F9;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Background Image + Dark Overlay */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(rgba(15, 23, 42, 0.58), rgba(15, 23, 42, 0.74)),
+        url("../images/hero.png") center / cover no-repeat;
+    z-index: -1;
+}
+
+/* Header */
+header {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 5%;
+    background: rgba(15, 23, 42, 0.35);
+    border-bottom: 1px solid #334155;
+    backdrop-filter: blur(12px);
+}
+
+.logo img {
+    width: 180px;
+    display: block;
+}
+
+.admin-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.logout-btn {
+    text-decoration: none;
+    color: #F1F5F9;
+    background: #6366F1;
+    padding: 10px 18px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background: #4F46E5;
+}
+
+/* Main Dashboard */
+.dashboard {
+    width: 90%;
+    max-width: 1300px;
+    margin: 35px auto;
+}
+
+/* Welcome Section */
+.welcome {
+    margin-bottom: 28px;
+}
+
+.welcome p,
+.section-heading > div > p {
+    color: #818CF8;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.welcome h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.welcome span {
+    color: #94A3B8;
+    font-size: 15px;
+}
+
+/* Summary Cards */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 35px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px;
+    background: rgba(30, 41, 59, 0.45);
+    border: 1px solid #334155;
+    border-radius: 14px;
+    transition: 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: #6366F1;
+}
+
+.stat-card > span {
+    font-size: 30px;
+}
+
+.stat-card h2 {
+    font-size: 25px;
+    margin-bottom: 6px;
+}
+
+.stat-card p {
+    color: #94A3B8;
+    font-size: 13px;
+}
+
+/* Common Sections */
+.admin-section {
+    background: rgba(15, 23, 42, 0.49);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 28px;
+    scroll-margin-top: 20px;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.section-heading h2 {
+    font-size: 23px;
+}
+
+/* Filter Dropdown */
+#appointment-filter {
+    background: #1E293B;
+    color: #F1F5F9;
+    border: 1px solid #4a5b72;
+    padding: 10px 12px;
+    border-radius: 8px;
+    outline: none;
+}
+
+/* Tables */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th,
+td {
+    padding: 15px 12px;
+    text-align: left;
+    border-bottom: 1px solid #334155;
+    font-size: 14px;
+}
+
+th {
+    color: #A5B4FC;
+    background: #36455e2a;
+    font-weight: 600;
+}
+
+td {
+    color: #dbe0e5;
+}
+
+tbody tr:hover {
+    background: rgba(99, 102, 241, 0.08);
+}
+
+td[colspan] {
+    text-align: center;
+    color: #94A3B8;
+    padding: 25px;
+}
+
+/* Add Buttons */
+.add-btn {
+    background: #6366F1;
+    color: white;
+    border: none;
+    padding: 11px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.add-btn:hover {
+    background: #4F46E5;
+}
+
+/* Barber and Service Lists */
+.management-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+/* FOOTER */
+.footer {
+    padding: 40px 8% 18px;
+    background: rgba(11, 17, 32, 0.96);
+    border-top: 1px solid #334155;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 50px;
+}
+
+.footer-brand img {
+    width: 185px;
+    margin-bottom: 3px;
+}
+
+.footer-brand p,
+.footer-contact p {
+    color: #94A3B8;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.footer h3 {
+    font-size: 15px;
+    margin-bottom: 13px;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-links a {
+    color: #94A3B8;
+    text-decoration: none;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    color: #818CF8;
+}
+
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.footer-bottom {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #334155;
+    text-align: center;
+}
+
+.footer-bottom p {
+    color: #64748B;
+    font-size: 12px;
+}
+/* Responsive Design */
+@media (max-width: 1000px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .logo img {
+        width: 130px;
+    }
+}
+
+@media (max-width: 600px) {
+    header {
+        padding: 12px 5%;
+    }
+
+    .logo img {
+        width: 105px;
+    }
+
+    .admin-title {
+        font-size: 15px;
+    }
+
+    .logout-btn {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .dashboard {
+        width: 92%;
+        margin: 25px auto;
+    }
+
+    .welcome h1 {
+        font-size: 25px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 18px;
+    }
+
+    .admin-section {
+        padding: 16px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .section-heading h2 {
+        font-size: 20px;
+    }
+
+    .management-list {
+        grid-template-columns: 1fr;
+    }
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}
