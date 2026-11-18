@@ -535,9 +535,23 @@ nav a:hover {
     font-size: 12px;
 }
 
-/* MOBILE RESPONSIVE FIX */
-
+/* MOBILE */
 @media (max-width: 900px) {
+    header {
+        padding: 15px 25px;
+    }
+
+    nav {
+        gap: 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 48px;
+    }
+
+    .service-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
     .about {
         grid-template-columns: 1fr;
@@ -549,113 +563,108 @@ nav a:hover {
         gap: 35px;
     }
 
+    .about-points {
+        margin-top: 10px;
+    }
+
     .footer-content {
         grid-template-columns: 1fr 1fr;
-        gap: 30px;
     }
 }
 
 @media (max-width: 550px) {
-
     header {
-        position: relative;
-        z-index: 20;
-        height: 70px;
-        padding: 12px 18px;
+        padding: 14px 20px;
     }
 
     .logo img {
-        width: 125px;
+        width: 185px;
     }
 
     nav {
-        top: 100%;
+        display: none;
+        position: absolute;
+        top: 65px;
         left: 0;
         width: 100%;
-    }
-
-    .menu-toggle {
-        font-size: 26px;
-        padding: 5px;
+        padding: 20px;
+        background: #0F172A;
+        border-bottom: 1px solid #1E293B;
+        flex-direction: column;
+        gap: 18px;
+        z-index: 10;
     }
 
     .hero {
-        min-height: 480px;
-        padding: 45px 22px;
-        background-position: 60% center;
+        background-size: cover;
+        background-position: 65% center;
+        background-repeat: no-repeat;
+    }
+    nav.active {
+        display: flex;
+    }
+
+    .login-btn {
+        display: none;
+    }
+
+    .mobile-login {
+        display: block;
+    }
+
+    .menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        color: #F1F5F9;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .hero {
+        min-height: 500px;
+        padding: 50px 5%;
     }
 
     .hero-content h1 {
-        font-size: 38px;
-        line-height: 1.12;
+        font-size: 42px;
     }
-
-    .hero-content > p:first-child {
-        font-size: 11px;
-        letter-spacing: 1.5px;
-    }
-
-    .hero-content h1 + p {
-        font-size: 14px;
-        line-height: 1.5;
-    }
-
-    .services {
-        padding: 45px 18px;
-    }
-
     .service-container {
         grid-template-columns: 1fr;
-        gap: 18px;
     }
-
-    .service-card {
-        min-height: 360px;
-        padding: 22px;
+    .services {
+        padding: 50px 5%;
     }
-
     .service-card img {
         width: 100%;
         height: 100%;
     }
-
-    .section-title h2 {
-        font-size: 27px;
+    .service-card {
+        min-height: 400px;
     }
 
+    .section-title h2 {
+        font-size: 29px;
+    }
     .about {
-        min-height: auto;
-        padding: 45px 20px;
-        gap: 25px;
-        background-position: center;
+        padding: 50px 5%;
     }
 
     .about-content h2,
     .contact-info h2 {
-        font-size: 32px;
-    }
-
-    .about-point {
-        padding: 15px;
+        font-size: 34px;
     }
 
     .contact {
-        margin-top: 20px;
-        padding: 45px 18px;
+        padding: 50px 5%;
     }
 
     .contact-content {
-        grid-template-columns: 1fr;
-        gap: 28px;
-    }
-
-    .contact-form {
-        padding: 20px;
-        width: 100%;
+        gap: 30px;
     }
 
     .footer {
-        padding: 35px 20px 15px;
+        padding: 35px 5% 15px;
     }
 
     .footer-content {
@@ -663,4 +672,3 @@ nav a:hover {
         gap: 25px;
     }
 }
-
