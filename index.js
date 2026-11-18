@@ -1,11 +1,15 @@
-
 const express = require("express");
+const path = require("path");
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 
+// Frontend files serve karna
+app.use(express.static(path.join(__dirname, "frontend")));
+
+// Backend test route
 app.get("/api", (req, res) => {
     res.send("TRIMORA Backend is Running!");
 });
