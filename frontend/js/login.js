@@ -5,10 +5,35 @@ const loginForm = document.getElementById("login-form");
 const registerForm = document.getElementById("register-form");
 const registrationForm = document.getElementById("registration-form");
 
+// HAMBURGER MENU
+
+const menuToggle = document.getElementById("menu-toggle");
+const navMenu = document.getElementById("nav-menu");
+
+menuToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+
+    const isOpen = navMenu.classList.contains("active");
+    menuToggle.textContent = isOpen ? "✕" : "☰";
+    menuToggle.setAttribute("aria-expanded", isOpen);
+});
+
+// Close menu after clicking a link
+
+navMenu.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+        navMenu.classList.remove("active");
+        menuToggle.textContent = "☰";
+        menuToggle.setAttribute("aria-expanded", "false");
+    });
+});
+
 // Default: Login tab
+
 registerForm.style.display = "none";
 
 // Login / Register tabs
+
 tabs.forEach((tab, index) => {
     tab.addEventListener("click", () => {
         tabs.forEach(item => item.classList.remove("active"));
@@ -27,6 +52,7 @@ tabs.forEach((tab, index) => {
 });
 
 // Show / Hide Password
+
 function setupPasswordToggle(passwordId, toggleId) {
     const password = document.getElementById(passwordId);
     const toggle = document.getElementById(toggleId);
@@ -44,22 +70,26 @@ setupPasswordToggle("register-password", "toggle-register-password");
 setupPasswordToggle("confirm-password", "toggle-confirm-password");
 
 // Switch to Register
+
 document.querySelector(".switch-tect button").addEventListener("click", () => {
     tabs[1].click();
 });
 
 // Forgot Password
+
 document.getElementById("forgot-password").addEventListener("click", (e) => {
     e.preventDefault();
     alert("Password reset feature will be available soon.");
 });
 
 // Get saved users
+
 function getUsers() {
     return JSON.parse(localStorage.getItem("trimoraUsers")) || [];
 }
 
 // Register
+
 registrationForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -90,6 +120,7 @@ registrationForm.addEventListener("submit", (e) => {
 });
 
 // Login
+
 loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
