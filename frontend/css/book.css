@@ -1,60 +1,86 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-body{
+
+body {
     font-family: Arial, Helvetica, sans-serif;
     background: #0f172a;
     color: #f1f5f9;
 }
-header{
-    height: 80px;
+
+/* HEADER */
+
+header {
+    height: 75px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 60px;
     border-bottom: 1px solid #1e293b;
+    gap: 20px;
 }
-.logo{
+
+.logo {
     display: flex;
     align-items: center;
-    height: 100%;
 }
+
 .logo img {
     width: 180px;
     height: auto;
     display: block;
 }
-nav{
+
+nav {
     display: flex;
+    align-items: center;
     gap: 35px;
 }
+
 nav a {
     color: white;
     text-decoration: none;
     font-size: 15px;
 }
-nav a:hover{
+
+nav a:hover {
     color: #6366f1;
 }
-.login-btn{
+
+.login-btn {
     padding: 10px 22px;
     background: #6366f1;
     color: white;
     text-decoration: none;
     border-radius: 8px;
     font-weight: bold;
+    white-space: nowrap;
 }
-.login-btn:hover{
+
+.login-btn:hover {
     background: #4f46e5;
 }
-.booking{
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #f1f5f9;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* BOOKING SECTION */
+
+.booking {
     padding: 60px 8%;
     background:
         linear-gradient(rgba(15,23,42,0.48), rgba(15,23,42,0.70)),
         url("../images/booking.jpg") center/cover no-repeat;
 }
+
 .booking > p {
     color: #6366f1;
     font-size: 13px;
@@ -62,12 +88,16 @@ nav a:hover{
     letter-spacing: 2px;
     text-align: center;
 }
-.booking h1{
+
+.booking h1 {
     font-size: 42px;
     margin: 10px 0 35px;
     text-align: center;
 }
-.booking-box{
+
+/* BOOKING BOX */
+
+.booking-box {
     max-width: 850px;
     margin: 0 auto;
     background: rgba(1, 8, 20, 0.6);
@@ -75,109 +105,165 @@ nav a:hover{
     border-radius: 14px;
     padding: 35px;
 }
-.booking-box h2{
+
+.booking-box h2 {
     font-size: 20px;
     margin-bottom: 15px;
     margin-top: 25px;
 }
-.booking-box h2:first-child{
+
+.booking-box h2:first-child {
     margin-top: 0;
 }
+
+/* SERVICE AND BARBER OPTIONS */
+
 .service-options,
 .barber-options,
-.time{
+.time {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
 }
+
 .service-options button,
 .barber-options button,
-.time button{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    flex:1;
-    min-width:0;
-    padding:10px;
-    text-align:left;
-    background:#3f5477;
-    border:1px solid #334155;
-    border-radius:10px;
+.time button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    padding: 10px;
+    text-align: left;
+    background: #3f5477;
+    color: #f1f5f9;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.3s;
 }
+
 .service-options img,
-.barber-options img{
-    width:58px;
-    height:58px;
-    object-fit:cover;
-    border-radius:7px;
+.barber-options img {
+    width: 58px;
+    height: 58px;
+    object-fit: cover;
+    border-radius: 7px;
+    flex-shrink: 0;
 }
+
 .service-options span,
-.barber-options span{
-    font-size:14px;
-    font-weight:bold;
+.barber-options span {
+    font-size: 14px;
+    font-weight: bold;
 }
-.service-options small{
-    display:block;
-    margin-top:6px;
-    color:#a5b4fc;
+
+.service-options small {
+    display: block;
+    margin-top: 6px;
+    color: #a5b4fc;
 }
+
 .service-options button:hover,
 .barber-options button:hover,
-.time button:hover{
+.time button:hover {
     border-color: #6366f1;
     background: #6366f1;
 }
+
 .service-options button.selected,
 .barber-options button.selected,
-.time button.selected{
-    border:1px solid #6366f1;
-    background:#303e8f;
+.time button.selected {
+    border: 1px solid #6366f1;
+    background: #303e8f;
 }
+
+/* DATE INPUT */
+
 input[type="date"] {
+    width: 100%;
+    max-width: 250px;
+    min-height: 45px;
     padding: 12px;
     border: 1px solid #334155;
     border-radius: 8px;
     background: #3b4d77;
     color: #f1f5f9;
+    color-scheme: dark;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
 }
-.time{
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1);
+}
+
+/* TIME OPTIONS */
+
+.time {
     margin-top: 15px;
 }
-.summary{
-    margin-top:35px;
-    padding-top:25px;
-    border-top:1px solid #334155;
-    display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    position:relative;
+
+.time button {
+    justify-content: center;
+    text-align: center;
+    flex: 1 1 110px;
 }
-.summary h2{
+
+/* APPOINTMENT SUMMARY */
+
+.summary {
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px solid #334155;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 20px;
+}
+
+.summary h2,
+.summary p {
+    grid-column: 1;
+}
+
+.summary h2 {
     margin-top: 0;
+    margin-bottom: 15px;
 }
-.summary p{
+
+.summary p {
     color: #94a3b8;
     margin: 8px 0;
 }
-.summary button{
-    position:absolute;
-    right:0;
-    top:50%;
-    transform:translateY(-50%);
-    margin:0;
-    padding:13px 22px;
-    border:none;
-    border-radius:8px;
-    background:#6366f1;
-    color:white;
-    font-weight:bold;
-    white-space:nowrap;
-    cursor:pointer;
+
+.summary button {
+    grid-column: 2;
+    grid-row: 1 / span 5;
+    align-self: center;
+
+    padding: 13px 22px;
+    border: none;
+    border-radius: 8px;
+    background: #6366f1;
+    color: white;
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: 0.3s;
 }
-.summary button:hover{
+
+.summary button:hover {
     background: #4f46e5;
 }
+
 /* FOOTER */
+
 .footer {
     padding: 40px 8% 18px;
     background: #0B1120;
@@ -241,39 +327,163 @@ input[type="date"] {
     color: #475569;
     font-size: 12px;
 }
-@media(max-width: 700px) {
-    header{
-        padding: 18px 5%;
+
+/* TABLET AND MOBILE RESPONSIVE */
+
+@media (max-width: 700px) {
+
+    /* HEADER */
+
+    header {
+        padding: 0 5%;
+        gap: 10px;
     }
-    nav{
+
+    .logo img {
+        width: 160px;
+    }
+
+    nav {
         display: none;
+        position: absolute;
+        top: 75px;
+        left: 0;
+        width: 100%;
+        padding: 20px;
+        background: #0F172A;
+        border-bottom: 1px solid #1E293B;
+        flex-direction: column;
+        gap: 18px;
+        z-index: 10;
     }
-    .booking{
+
+    nav.active {
+        display: flex;
+    }
+
+    .login-btn {
+        padding: 9px 16px;
+        font-size: 13px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    /* BOOKING */
+
+    .booking {
         padding: 45px 5%;
     }
-    .booking h1{
-        font-size: 34px;
+
+    .booking h1 {
+        font-size: 30px;
     }
-    .booking-box{
-        padding: 25px;
+
+    .booking-box {
+        padding: 22px 16px;
     }
-    .options,
-    .time{
+
+    /* SERVICE AND BARBER */
+
+    .service-options,
+    .barber-options {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .service-options button,
+    .barber-options button {
+        width: 100%;
+    }
+
+    /* TIME */
+
+    .time {
         display: grid;
         grid-template-columns: 1fr 1fr;
     }
-    .options button,
+
     .time button {
         width: 100%;
     }
-    .service-options,.barber-options{
-        display:grid;
-        grid-template-columns:1fr;
+
+    /* DATE */
+
+    input[type="date"] {
+        max-width: 100%;
     }
-    .service-options button,.barber-options button{
-        width:100%;
+
+    /* SUMMARY */
+
+    .summary {
+        grid-template-columns: 1fr;
+        row-gap: 5px;
     }
-    footer{
-        padding: 25px 5%;
+
+    .summary h2,
+    .summary p {
+        grid-column: 1;
+    }
+
+    .summary button {
+        grid-column: 1;
+        grid-row: auto;
+        width: 100%;
+        margin-top: 18px;
+        text-align: center;
+        white-space: normal;
+    }
+
+    /* FOOTER */
+
+    .footer {
+        padding: 30px 5% 18px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .footer-brand,
+    .footer-links,
+    .footer-contact {
+        width: 100%;
+    }
+
+    .footer-bottom {
+        margin-top: 25px;
+    }
+}
+
+/* SMALL MOBILE SCREENS */
+
+@media (max-width: 380px) {
+
+    .booking {
+        padding: 35px 4%;
+    }
+
+    .booking h1 {
+        font-size: 26px;
+    }
+
+    .booking-box {
+        padding: 18px 12px;
+    }
+
+    .service-options img,
+    .barber-options img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .logo img {
+        width: 145px;
+    }
+
+    .login-btn {
+        padding: 8px 12px;
     }
 }
