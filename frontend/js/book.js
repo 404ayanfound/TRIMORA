@@ -1,117 +1,216 @@
+/* HAMBURGER MENU */
 
-/* TRIMORA BOOK APPOINTMENT */
+const menuToggle = document.getElementById("menu-toggle");
+const navMenu = document.getElementById("nav-menu");
 
-// Selection buttons
+menuToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+
+    const isOpen = navMenu.classList.contains("active");
+
+    menuToggle.textContent = isOpen ? "✕" : "☰";
+    menuToggle.setAttribute("aria-expanded", isOpen);
+});
+
+// Close menu after clicking a link
+
+navMenu.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+        navMenu.classList.remove("active");
+        menuToggle.textContent = "☰";
+        menuToggle.setAttribute("aria-expanded", "false");
+    });
+});
+
+// SELECTION BUTTONS
+
 const serviceButtons = document.querySelectorAll(".service-options button");
 const barberButtons = document.querySelectorAll(".barber-options button");
 const timeButtons = document.querySelectorAll(".time button");
+
+// Summary elements
 
 const summaryService = document.getElementById("summary-service");
 const summaryBarber = document.getElementById("summary-barber");
 const summaryDate = document.getElementById("summary-date");
 const summaryTime = document.getElementById("summary-time");
-const dateInput = document.querySelector('input[type="date"]');
-const confirmButton = document.querySelector(".summary button");
 
-// Service selection
+// Input elements
+
+const dateInput = document.getElementById("appointment-date");
+const confirmButton = document.getElementById("confirm-booking");
+
+// Prevent past dates
+
+const today = new Date();
+
+const localToday = [
+    today.getFullYear(),
+    String(today.getMonth() + 1).padStart(2, "0"),
+    String(today.getDate()).padStart(2, "0")
+].join("-");
+
+dateInput.min = localToday;
+
+// SERVICE SELECTION
+
 serviceButtons.forEach(button => {
     button.addEventListener("click", () => {
         serviceButtons.forEach(btn => btn.classList.remove("selected"));
         button.classList.add("selected");
 
         summaryService.textContent =
-            "Service: " + (button.dataset.name || button.textContent.trim()) +
-            " - ₹" + (button.dataset.price || 0);
+            "Service: " + button.dataset.name +
+            " - ₹" + button.dataset.price;
     });
 });
 
-// Barber selection
+// BARBER SELECTION
+
 barberButtons.forEach(button => {
     button.addEventListener("click", () => {
         barberButtons.forEach(btn => btn.classList.remove("selected"));
         button.classList.add("selected");
 
         summaryBarber.textContent =
-            "Barber: " + (button.dataset.name || button.textContent.trim());
+            "Barber: " + button.dataset.name;
     });
 });
 
-// Date selection
-dateInput?.addEventListener("change", function () {
-    summaryDate.textContent = "Date: " + this.value;
+// DATE SELECTION
+
+dateInput.addEventListener("change", () => {
+    summaryDate.textContent = dateInput.value
+        ? "Date: " + dateInput.value
+        : "Date: Not Selected";
+
+    // Reset previous time selection
+
+    timeButtons.forEach(button => button.classList.remove("selected"));
+    summaryTime.textContent = "Time: Not Selected";
 });
 
-// Time selection
+// TIME SELECTION
+
 timeButtons.forEach(button => {
     button.addEventListener("click", () => {
+        if (!dateInput.value) {
+            alert("Please select a date first.");
+            return;
+        }
+
         timeButtons.forEach(btn => btn.classList.remove("selected"));
         button.classList.add("selected");
 
-        summaryTime.textContent = "Time: " + button.textContent.trim();
+        summaryTime.textContent =
+            "Time: " + button.textContent.trim();
     });
 });
 
-// Read saved JSON safely
+// READ ALL SAVED APPOINTMENTS
+
 function readAppointments() {
     try {
         const saved = JSON.parse(
             localStorage.getItem("trimoraAppointments") || "[]"
         );
 
-        if (Array.isArray(saved) && saved.length > 0) {
+        if (Array.isArray(saved)) {
             return saved;
         }
     } catch (error) {
         console.error("Could not read appointments:", error);
     }
 
+    // Old single-booking compatibility
+
     try {
-        const single = JSON.parse(
+        const oldBooking = JSON.parse(
             localStorage.getItem("trimoraAppointment") || "null"
         );
 
-        return single ? [single] : [];
+        return oldBooking ? [oldBooking] : [];
     } catch (error) {
         return [];
     }
 }
 
-// Confirm appointment
-confirmButton?.addEventListener("click", () => {
-    const service = document.querySelector(".service-options .selected");
-    const barber = document.querySelector(".barber-options .selected");
-    const time = document.querySelector(".time .selected");
-    const date = dateInput?.value;
+// GET LOGGED-IN CUSTOMER
 
-    if (!service || !barber || !date || !time) {
-        alert("Please select service, barber, date and time.");
-        return;
+function getCustomer() {
+    try {
+        const user = JSON.parse(
+            localStorage.getItem("trimoraLoggedInUser") || "null"
+        );
+
+        if (user && user.name) {
+            return user.name;
+        }
+    } catch (error) {
+        console.error("Could not read logged-in user:", error);
     }
 
-    // Customer name from possible login storage keys
-    const customerName =
+    return (
         localStorage.getItem("trimoraCustomerName") ||
         localStorage.getItem("customerName") ||
         localStorage.getItem("userName") ||
         localStorage.getItem("trimoraUserName") ||
-        "Customer";
+        "Customer"
+    );
+}
 
-    const serviceName =
-        service.dataset.name || service.textContent.trim();
+// GENERATE QUEUE NUMBER
 
-    const barberName =
-        barber.dataset.name || barber.textContent.trim();
+function generateQueue(appointments, barberName, date) {
+    const sameBarberAppointments = appointments.filter(item =>
+        String(item.barber || item.barberName || "").trim().toLowerCase() ===
+            barberName.trim().toLowerCase() &&
+        item.date === date &&
+        !["cancelled", "canceled"].includes(
+            String(item.status || "").toLowerCase()
+        )
+    );
 
-    const price = Number(service.dataset.price || 0);
+    return String(sameBarberAppointments.length + 1).padStart(2, "0");
+}
+
+// CONFIRM BOOKING
+
+confirmButton.addEventListener("click", () => {
+
+    const service = document.querySelector(".service-options .selected");
+    const barber = document.querySelector(".barber-options .selected");
+    const selectedTime = document.querySelector(".time .selected");
+    const date = dateInput.value;
+
+    // Validate all selections
+
+    if (!service || !barber || !date || !selectedTime) {
+        alert("Please select service, barber, date and time.");
+        return;
+    }
+
+    // Prevent past date
+
+    if (date < localToday) {
+        alert("Please select today or a future date.");
+        return;
+    }
+
+    const serviceName = service.dataset.name;
+    const barberName = barber.dataset.name;
+    const price = Number(service.dataset.price);
+    const time = selectedTime.textContent.trim();
 
     const appointments = readAppointments();
 
-    // Prevent duplicate booking for same barber/date/time
+    // Prevent duplicate active booking
+
     const alreadyBooked = appointments.some(item =>
         String(item.barber || item.barberName || "").trim().toLowerCase() ===
             barberName.trim().toLowerCase() &&
         item.date === date &&
-        String(item.time || "").trim() === time.textContent.trim() &&
+        String(item.time || "").trim() === time &&
         !["cancelled", "canceled", "completed"].includes(
             String(item.status || "").toLowerCase()
         )
@@ -122,6 +221,10 @@ confirmButton?.addEventListener("click", () => {
         return;
     }
 
+    // Appointment details
+
+    const customerName = getCustomer();
+
     const appointment = {
         id: Date.now(),
         customer: customerName,
@@ -130,10 +233,12 @@ confirmButton?.addEventListener("click", () => {
         price: price,
         barber: barberName,
         date: date,
-        time: time.textContent.trim(),
+        time: time,
         status: "Confirmed",
-        queue: "—"
+        queue: generateQueue(appointments, barberName, date)
     };
+
+    // Save all appointments
 
     appointments.push(appointment);
 
@@ -142,12 +247,17 @@ confirmButton?.addEventListener("click", () => {
         JSON.stringify(appointments)
     );
 
+    // Keep latest appointment for existing dashboard
+
     localStorage.setItem(
         "trimoraAppointment",
         JSON.stringify(appointment)
     );
 
-    alert("Appointment confirmed successfully!");
+    alert(
+        "Appointment confirmed successfully!\nYour Queue Number: #" +
+        appointment.queue
+    );
 
     window.location.href = "user.html";
 });
