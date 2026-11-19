@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,18 +8,24 @@
     <link rel="stylesheet" href="css/book.css">
 </head>
 <body>
+
     <header>
         <a href="index.html" class="logo">
             <img src="images/logo.png" alt="TRIMORA Logo">
         </a>
 
-        <nav>
+        <nav id="nav-menu">
             <a href="index.html">Home</a>
             <a href="index.html#services">Services</a>
             <a href="index.html#about">About</a>
             <a href="index.html#contact">Contact</a>
         </nav>
+
         <a href="login.html" class="login-btn">Login</a>
+
+        <button class="menu-toggle" id="menu-toggle"
+            type="button" aria-label="Toggle navigation"
+            aria-expanded="false">☰</button>
     </header>
 
     <main class="booking">
@@ -33,10 +40,12 @@
                     <img src="images/haircut 2.jpg" alt="Haircut">
                     <span>Haircut<small>₹150</small></span>
                 </button>
+
                 <button type="button" data-name="Beard Trim" data-price="100">
                     <img src="images/beard 2.jpg" alt="Beard Trim">
                     <span>Beard Trim<small>₹100</small></span>
                 </button>
+
                 <button type="button" data-name="Hair + Beard" data-price="200">
                     <img src="images/hair & beard 2.jpg" alt="Hair and Beard">
                     <span>Hair + Beard<small>₹200</small></span>
@@ -49,10 +58,12 @@
                     <img src="images/arjun.jpg" alt="Arjun">
                     <span>Arjun</span>
                 </button>
+
                 <button type="button" data-name="Rahul">
                     <img src="images/rahul.jpg" alt="Rahul">
                     <span>Rahul</span>
                 </button>
+
                 <button type="button" data-name="Vikash">
                     <img src="images/vikash.jpg" alt="Vikash">
                     <span>Vikash</span>
@@ -60,17 +71,17 @@
             </div>
 
             <h2>Select Date & Time</h2>
-            <input type="date">
+            <input type="date" id="appointment-date" required>
 
             <div class="time">
-                <button>10:00 AM</button>
-                <button>11:00 AM</button>
-                <button>12:00 PM</button>
-                <button>02:00 PM</button>
-                <button>03:00 PM</button>
-                <button>04:00 PM</button>
-                <button>05:00 PM</button>
-                <button>06:00 PM</button>
+                <button type="button">10:00 AM</button>
+                <button type="button">11:00 AM</button>
+                <button type="button">12:00 PM</button>
+                <button type="button">02:00 PM</button>
+                <button type="button">03:00 PM</button>
+                <button type="button">04:00 PM</button>
+                <button type="button">05:00 PM</button>
+                <button type="button">06:00 PM</button>
             </div>
 
             <div class="summary">
@@ -79,13 +90,15 @@
                 <p id="summary-barber">Barber: Not Selected</p>
                 <p id="summary-date">Date: Not Selected</p>
                 <p id="summary-time">Time: Not Selected</p>
-                <button>Confirm Booking ➜</button>
+                <button type="button" id="confirm-booking">Confirm Booking ➜</button>
             </div>
+
         </div>
     </main>
 
     <footer class="footer">
         <div class="footer-content">
+
             <div class="footer-brand">
                 <img src="images/logo.png" alt="TRIMORA Logo">
                 <p>Smart barber appointments.<br>Better grooming, less waiting.</p>
@@ -108,12 +121,14 @@
                 <p>✉️ support@trimora.com</p>
                 <p>☎️ +91 98765 43210</p>
             </div>
+
         </div>
 
         <div class="footer-bottom">
             <p>© 2026 TRIMORA. All rights reserved.</p>
         </div>
     </footer>
+
     <script src="js/book.js"></script>
 </body>
 </html>
