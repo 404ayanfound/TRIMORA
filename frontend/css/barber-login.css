@@ -1,0 +1,279 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0F172A;
+    color: #F1F5F9;
+    min-height: 100vh;
+}
+
+/* HEADER */
+
+header {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 60px;
+    background: #0F172A;
+    border-bottom: 1px solid #1E293B;
+    gap: 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo img {
+    width: 180px;
+    height: auto;
+    display: block;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+nav a {
+    color: #7394C2;
+    text-decoration: none;
+    font-size: 14px;
+    transition: .3s;
+}
+
+nav a:hover {
+    color: #6366F1;
+}
+
+.menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #F1F5F9;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* LOGIN PAGE */
+
+.auth-page {
+    min-height: calc(100vh - 75px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    background:
+        linear-gradient(rgba(15,23,42,.72), rgba(15,23,42,.84)),
+        url("../images/login.jpg") center/cover no-repeat;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 430px;
+    background: rgba(30,41,59,.94);
+    border: 1px solid #475569;
+    border-radius: 16px;
+    padding: 35px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 25px rgba(99,102,241,.12);
+    transition: .3s;
+}
+
+.auth-card:hover {
+    border-color: #6366F1;
+    box-shadow: 0 0 20px rgba(99,102,241,.2),
+                0 0 45px rgba(99,102,241,.12);
+    transform: translateY(-4px);
+}
+
+/* LOGIN HEADER */
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.panel-label {
+    color: #818CF8;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 13px;
+}
+
+.auth-header h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.auth-header > p:last-child {
+    color: #94A3B8;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* FORM */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 9px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 13px 14px;
+    background: #0F172A;
+    color: #F1F5F9;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    border-color: #6366F1;
+}
+
+.form-group input::placeholder {
+    color: #64748B;
+}
+
+/* PASSWORD */
+
+.password-box {
+    position: relative;
+}
+
+.password-box input {
+    padding-right: 45px;
+}
+
+.password-box button {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #64748B;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.password-box button:hover {
+    color: #6366F1;
+}
+
+/* LOGIN BUTTON */
+
+.auth-btn {
+    width: 100%;
+    padding: 13px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 8px;
+    background: #6366F1;
+    color: #F1F5F9;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.auth-btn:hover {
+    background: #4F46E5;
+}
+
+/* LOGIN NOTE */
+
+.login-note {
+    margin-top: 23px;
+    text-align: center;
+    color: #94A3B8;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.login-note span {
+    display: block;
+    color: #818CF8;
+}
+
+/* TABLET AND MOBILE */
+
+@media (max-width: 700px) {
+
+    header {
+        padding: 0 5%;
+        gap: 10px;
+    }
+
+    .logo img {
+        width: 160px;
+    }
+
+    nav {
+        display: none;
+        position: absolute;
+        top: 75px;
+        left: 0;
+        width: 100%;
+        padding: 20px;
+        background: #0F172A;
+        border-bottom: 1px solid #1E293B;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    nav.active {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .auth-page {
+        padding: 38px 5%;
+    }
+
+    .auth-card {
+        padding: 25px 20px;
+    }
+
+    .auth-header h1 {
+        font-size: 24px;
+    }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 380px) {
+
+    .logo img {
+        width: 145px;
+    }
+
+    .auth-card {
+        padding: 22px 17px;
+    }
+
+    .auth-header h1 {
+        font-size: 22px;
+    }
+}
