@@ -1,4 +1,3 @@
-
 /* TRIMORA ADMIN DASHBOARD */
 
 // Load saved data
@@ -123,7 +122,6 @@ function showAppointments() {
 
 filter.addEventListener("change", showAppointments);
 
-
 // Add and display barbers
 const barberList = document.getElementById("barber-list");
 
@@ -144,7 +142,15 @@ function showBarbers() {
             : barber.name;
 
         const details = document.createElement("div");
-        details.textContent = name;
+        details.innerHTML = "";
+
+        const barberName = document.createElement("strong");
+        barberName.textContent = name;
+
+        const barberEmail = document.createElement("p");
+        barberEmail.textContent = barber.email || "Email not available";
+
+        details.append(barberName, barberEmail);
 
         const removeBtn = document.createElement("button");
         removeBtn.className = "add-btn";
@@ -166,14 +172,44 @@ function showBarbers() {
 
 document.getElementById("add-barber-btn").addEventListener("click", () => {
     const name = prompt("Enter barber name:");
-
     if (!name || !name.trim()) return;
 
-    barbers.push({ name: name.trim() });
+    const email = prompt("Enter barber email:");
+    if (!email || !email.trim()) return;
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    if (barbers.some(barber =>
+        typeof barber !== "string" &&
+        barber.email?.toLowerCase() === normalizedEmail
+    )) {
+        alert("This barber email already exists.");
+        return;
+    }
+
+    const password = prompt("Create barber password (minimum 6 characters):");
+
+    if (!password || password.length < 6) {
+        alert("Password must contain at least 6 characters.");
+        return;
+    }
+
+    barbers.push({
+        name: name.trim(),
+        email: normalizedEmail,
+        password: password
+    });
 
     saveData();
     showBarbers();
     updateSummary();
+
+    alert("Barber account created successfully!");
 });
 
 
