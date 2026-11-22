@@ -218,3 +218,11 @@ appointmentList?.addEventListener("click", event => {
 
 // Initial display
 renderAppointments();
+
+// BARBER LOGOUT
+
+document.getElementById("barber-logout")?.addEventListener("click", () => {
+    localStorage.removeItem("trimoraBarberName");
+    localStorage.removeItem("trimoraBarberEmail");
+    localStorage.removeItem("trimoraLoggedInBarber");
+});
