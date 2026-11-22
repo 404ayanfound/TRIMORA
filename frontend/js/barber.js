@@ -1,4 +1,3 @@
-
 /* TRIMORA BARBER DASHBOARD */
 
 const appointmentList = document.getElementById("appointment-list");
@@ -142,6 +141,26 @@ function renderAppointments() {
         `;
     }).join("");
 }
+
+// Mobile Navigation
+const menuToggle = document.getElementById("menu-toggle");
+const navMenu = document.getElementById("nav-menu");
+
+menuToggle?.addEventListener("click", () => {
+    const isOpen = navMenu.classList.toggle("active");
+
+    menuToggle.setAttribute("aria-expanded", isOpen);
+    menuToggle.textContent = isOpen ? "✕" : "☰";
+});
+
+// Close menu after clicking a navigation link
+navMenu?.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+        navMenu.classList.remove("active");
+        menuToggle.textContent = "☰";
+        menuToggle.setAttribute("aria-expanded", "false");
+    });
+});
 
 // Filter buttons
 document.querySelectorAll(".filter-btn").forEach(button => {
