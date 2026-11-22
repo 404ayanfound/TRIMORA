@@ -1,9 +1,21 @@
 
-const tabs = document.querySelectorAll(".tab");
-const slider = document.querySelector(".tab-slider");
+/* TRIMORA LOGIN SYSTEM */
+
+// ELEMENTS
+
+const customerTab = document.getElementById("customer-tab");
+const barberTab = document.getElementById("barber-tab");
+const customerSection = document.getElementById("customer-section");
+const barberLoginForm = document.getElementById("barber-login-form");
+
+const customerLoginTab = document.getElementById("customer-login-tab");
+const customerRegisterTab = document.getElementById("customer-register-tab");
+
 const loginForm = document.getElementById("login-form");
 const registerForm = document.getElementById("register-form");
 const registrationForm = document.getElementById("registration-form");
+
+const slider = document.querySelector(".tab-slider");
 
 // HAMBURGER MENU
 
@@ -18,8 +30,6 @@ menuToggle.addEventListener("click", () => {
     menuToggle.setAttribute("aria-expanded", isOpen);
 });
 
-// Close menu after clicking a link
-
 navMenu.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", () => {
         navMenu.classList.remove("active");
@@ -28,30 +38,64 @@ navMenu.querySelectorAll("a").forEach(link => {
     });
 });
 
-// Default: Login tab
+// CUSTOMER LOGIN / REGISTER
 
-registerForm.style.display = "none";
+function showCustomerLogin() {
+    customerLoginTab.classList.add("active");
+    customerRegisterTab.classList.remove("active");
 
-// Login / Register tabs
+    loginForm.style.display = "block";
+    registerForm.style.display = "none";
 
-tabs.forEach((tab, index) => {
-    tab.addEventListener("click", () => {
-        tabs.forEach(item => item.classList.remove("active"));
-        tab.classList.add("active");
+    document.getElementById("customer-switch-text").innerHTML =
+        `Don't have an account?
+        <button type="button" id="customer-switch-btn">Register</button>`;
 
-        if (index === 1) {
-            slider.classList.add("register");
-            loginForm.style.display = "none";
-            registerForm.style.display = "block";
-        } else {
-            slider.classList.remove("register");
-            loginForm.style.display = "block";
-            registerForm.style.display = "none";
-        }
-    });
+    document.getElementById("customer-switch-btn")
+        .addEventListener("click", showCustomerRegister);
+}
+
+function showCustomerRegister() {
+    customerRegisterTab.classList.add("active");
+    customerLoginTab.classList.remove("active");
+
+    loginForm.style.display = "none";
+    registerForm.style.display = "block";
+
+    document.getElementById("customer-switch-text").innerHTML =
+        `Already have an account?
+        <button type="button" id="customer-switch-btn">Login</button>`;
+
+    document.getElementById("customer-switch-btn")
+        .addEventListener("click", showCustomerLogin);
+}
+
+customerLoginTab.addEventListener("click", showCustomerLogin);
+customerRegisterTab.addEventListener("click", showCustomerRegister);
+
+// CUSTOMER / BARBER ROLE SWITCH
+
+customerTab.addEventListener("click", () => {
+    customerTab.classList.add("active");
+    barberTab.classList.remove("active");
+
+    slider.classList.remove("register");
+
+    customerSection.style.display = "block";
+    barberLoginForm.style.display = "none";
 });
 
-// Show / Hide Password
+barberTab.addEventListener("click", () => {
+    barberTab.classList.add("active");
+    customerTab.classList.remove("active");
+
+    slider.classList.add("register");
+
+    customerSection.style.display = "none";
+    barberLoginForm.style.display = "block";
+});
+
+// SHOW / HIDE PASSWORD
 
 function setupPasswordToggle(passwordId, toggleId) {
     const password = document.getElementById(passwordId);
@@ -60,35 +104,47 @@ function setupPasswordToggle(passwordId, toggleId) {
     if (!password || !toggle) return;
 
     toggle.addEventListener("click", () => {
-        password.type = password.type === "password" ? "text" : "password";
-        toggle.textContent = password.type === "password" ? "👁" : "🙈";
+        password.type =
+            password.type === "password" ? "text" : "password";
+
+        toggle.textContent =
+            password.type === "password" ? "👁" : "🙈";
     });
 }
 
 setupPasswordToggle("password", "toggle-password");
 setupPasswordToggle("register-password", "toggle-register-password");
 setupPasswordToggle("confirm-password", "toggle-confirm-password");
+setupPasswordToggle("barber-password", "toggle-barber-password");
 
-// Switch to Register
-
-document.querySelector(".switch-tect button").addEventListener("click", () => {
-    tabs[1].click();
-});
-
-// Forgot Password
+// FORGOT PASSWORD
 
 document.getElementById("forgot-password").addEventListener("click", (e) => {
     e.preventDefault();
     alert("Password reset feature will be available soon.");
 });
 
-// Get saved users
+// GET SAVED CUSTOMERS
 
 function getUsers() {
-    return JSON.parse(localStorage.getItem("trimoraUsers")) || [];
+    try {
+        return JSON.parse(localStorage.getItem("trimoraUsers")) || [];
+    } catch {
+        return [];
+    }
 }
 
-// Register
+// GET SAVED BARBERS
+
+function getBarbers() {
+    try {
+        return JSON.parse(localStorage.getItem("trimoraBarbers")) || [];
+    } catch {
+        return [];
+    }
+}
+
+// CUSTOMER REGISTRATION
 
 registrationForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -97,6 +153,11 @@ registrationForm.addEventListener("submit", (e) => {
     const email = document.getElementById("register-email").value.trim().toLowerCase();
     const password = document.getElementById("register-password").value;
     const confirmPassword = document.getElementById("confirm-password").value;
+
+    if (password.length < 6) {
+        alert("Password must be at least 6 characters long!");
+        return;
+    }
 
     if (password !== confirmPassword) {
         alert("Password and Confirm Password do not match!");
@@ -111,15 +172,16 @@ registrationForm.addEventListener("submit", (e) => {
     }
 
     users.push({ name, email, password });
+
     localStorage.setItem("trimoraUsers", JSON.stringify(users));
 
     alert("Registration successful! Please Login.");
 
     registrationForm.reset();
-    tabs[0].click();
+    showCustomerLogin();
 });
 
-// Login
+// CUSTOMER LOGIN
 
 loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -138,6 +200,10 @@ loginForm.addEventListener("submit", (e) => {
         return;
     }
 
+    localStorage.removeItem("trimoraBarberName");
+    localStorage.removeItem("trimoraBarberEmail");
+    localStorage.removeItem("trimoraLoggedInBarber");
+
     localStorage.setItem("trimoraLoggedInUser", JSON.stringify({
         name: user.name,
         email: user.email
@@ -147,3 +213,49 @@ loginForm.addEventListener("submit", (e) => {
 
     window.location.href = "user.html";
 });
+
+// BARBER LOGIN
+
+barberLoginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("barber-email").value.trim().toLowerCase();
+    const password = document.getElementById("barber-password").value;
+
+    const barbers = getBarbers();
+
+    const barber = barbers.find(item =>
+        typeof item === "object" &&
+        item.email &&
+        item.email.trim().toLowerCase() === email &&
+        item.password === password
+    );
+
+    if (!barber) {
+        alert("Invalid barber email or password! Please contact Admin.");
+        return;
+    }
+
+    if (!barber.name) {
+        alert("Barber account details are incomplete. Please contact Admin.");
+        return;
+    }
+
+    localStorage.removeItem("trimoraLoggedInUser");
+
+    localStorage.setItem("trimoraBarberName", barber.name);
+    localStorage.setItem("trimoraBarberEmail", barber.email);
+
+    localStorage.setItem("trimoraLoggedInBarber", JSON.stringify({
+        name: barber.name,
+        email: barber.email
+    }));
+
+    alert("Welcome " + barber.name + "!");
+
+    window.location.href = "barber.html";
+});
+
+// INITIAL STATE
+
+showCustomerLogin();
