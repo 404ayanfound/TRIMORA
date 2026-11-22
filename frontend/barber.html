@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,18 +8,28 @@
     <link rel="stylesheet" href="css/barber.css">
 </head>
 <body>
+
     <header>
         <a href="index.html" class="logo">
             <img src="images/logo.png" alt="TRIMORA Logo">
         </a>
-        <nav>
+
+        <nav id="nav-menu">
             <a href="index.html">Home</a>
             <a href="index.html#services">Services</a>
             <a href="index.html#about">About</a>
             <a href="index.html#contact">Contact</a>
         </nav>
+
         <a href="login.html" class="logout-btn">Logout</a>
+
+        <button class="menu-toggle" id="menu-toggle"
+            aria-label="Toggle navigation"
+            aria-expanded="false">
+            ☰
+        </button>
     </header>
+
     <main class="dashboard">
         <section class="welcome">
             <p>TRIMORA BARBER PANEL</p>
@@ -28,7 +39,7 @@
 
         <section class="stats">
             <div class="stat-card">
-               <span>📋</span>
+                <span>📋</span>
                 <div>
                     <h2 id="total-count">0</h2>
                     <p>Total Appointments</p>
@@ -70,12 +81,14 @@
             <div class="appointment-list" id="appointment-list"></div>
         </section>
     </main>
+
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-brand">
                 <img src="images/logo.png" alt="TRIMORA Logo">
                 <p>Smart barber appointments.<br>Better grooming, less waiting.</p>
             </div>
+
             <div class="footer-links">
                 <h3>Quick Links</h3>
                 <a href="index.html">Home</a>
@@ -86,6 +99,7 @@
                 <a href="barber.html">barber dashboard</a>
                 <a href="admin.html">admin dashboard</a>
             </div>
+
             <div class="footer-contact">
                 <h3>Contact</h3>
                 <p>📍 Raipur, Chhattisgarh</p>
@@ -93,10 +107,12 @@
                 <p>☎️ +91 98765 43210</p>
             </div>
         </div>
+
         <div class="footer-bottom">
             <p>© 2026 TRIMORA. All rights reserved.</p>
         </div>
     </footer>
+
     <script src="js/barber.js"></script>
 </body>
 </html>
