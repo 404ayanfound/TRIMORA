@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -103,12 +104,12 @@ header a:hover {
 }
 
 .auth-header p {
-    color: #64748b;
+    color: #94a3b8;
     font-size: 14px;
     line-height: 1.5;
 }
 
-/* LOGIN / REGISTER TABS */
+/* CUSTOMER / BARBER TABS */
 
 .auth-tabs {
     position: relative;
@@ -117,7 +118,7 @@ header a:hover {
     background: #0F172A;
     border-radius: 8px;
     padding: 4px;
-    margin-bottom: 25px;
+    margin-bottom: 22px;
     overflow: hidden;
 }
 
@@ -142,15 +143,43 @@ header a:hover {
     border: none;
     background: transparent;
     color: #64748B;
-    padding: 11px;
+    padding: 11px 5px;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 13px;
     transition: 0.3s;
 }
 
 .tab.active {
     color: #F1F5F9;
+}
+
+/* CUSTOMER LOGIN / REGISTER TABS */
+
+.customer-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid #334155;
+}
+
+.customer-tab {
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.customer-tab.active {
+    color: #818cf8;
+    border-bottom-color: #6366f1;
 }
 
 /* FORM */
@@ -191,8 +220,9 @@ header a:hover {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 22px;
-    font-family: 13px;
-    color: #64748b;
+    font-size: 13px;
+    color: #94a3b8;
+    gap: 10px;
 }
 
 .form-option label {
@@ -202,7 +232,7 @@ header a:hover {
 }
 
 .form-option a {
-    color: #6366f1;
+    color: #818cf8;
     text-decoration: none;
 }
 
@@ -247,6 +277,7 @@ header a:hover {
     cursor: pointer;
     font-size: 15px;
     text-align: center;
+    transition: 0.3s;
 }
 
 .auth-btn:hover {
@@ -261,7 +292,7 @@ header a:hover {
 
 .switch-tect {
     text-align: center;
-    color: #64748b;
+    color: #94a3b8;
     font-size: 13px;
     margin-top: 22px;
 }
@@ -269,16 +300,24 @@ header a:hover {
 .switch-tect button {
     border: none;
     background: transparent;
-    color: #6366f1;
+    color: #818cf8;
     cursor: pointer;
     font-weight: bold;
+}
+
+/* BARBER LOGIN */
+
+#barber-login-form {
+    width: 100%;
+}
+
+#barber-login-form .form-group:last-of-type {
+    margin-bottom: 22px;
 }
 
 /* TABLET AND MOBILE */
 
 @media (max-width: 700px) {
-
-    /* HEADER */
 
     header {
         padding: 0 5%;
@@ -311,8 +350,6 @@ header a:hover {
         display: block;
     }
 
-    /* AUTH PAGE */
-
     .auth-page {
         padding: 38px 5%;
     }
@@ -326,7 +363,7 @@ header a:hover {
     }
 
     .auth-tabs {
-        margin-bottom: 22px;
+        margin-bottom: 20px;
     }
 }
 
@@ -336,5 +373,17 @@ header a:hover {
 
     .logo img {
         width: 145px;
+    }
+
+    .auth-card {
+        padding: 22px 15px;
+    }
+
+    .tab {
+        font-size: 12px;
+    }
+
+    .form-option {
+        font-size: 12px;
     }
 }
