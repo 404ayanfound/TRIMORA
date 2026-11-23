@@ -22,15 +22,15 @@ const barberImages = {
     vikash: "images/vikash.jpg"
 };
 
-// Mobile Menu
+// MOBILE HAMBURGER MENU
 menuToggle.addEventListener("click", () => {
     const isOpen = navMenu.classList.toggle("active");
 
     menuToggle.textContent = isOpen ? "✕" : "☰";
-    menuToggle.setAttribute("aria-expanded", String(isOpen));
+    menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
 });
 
-// Close menu after selecting a link
+// Close menu after clicking a navigation link
 navMenu.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", () => {
         navMenu.classList.remove("active");
@@ -39,12 +39,12 @@ navMenu.querySelectorAll("a").forEach(link => {
     });
 });
 
-// Logout
+// LOGOUT
 logoutButton.addEventListener("click", () => {
     localStorage.removeItem("trimoraLoggedInUser");
 });
 
-// Read all appointments
+// READ ALL APPOINTMENTS
 function getAppointments() {
     const saved = localStorage.getItem("trimoraAppointments");
 
@@ -81,20 +81,17 @@ function getAppointments() {
     return [];
 }
 
-// Find latest non-cancelled appointment
+// FIND LATEST APPOINTMENT
+// Cancelled appointment is also retained so its red status can be shown.
 function getLatestAppointment(appointments) {
-    const activeAppointments = appointments.filter(appointment =>
-        !["cancelled", "canceled"].includes(
-            String(appointment.status || "").toLowerCase()
-        )
-    );
+    const sortedAppointments = [...appointments];
 
-    activeAppointments.sort((a, b) => Number(b.id) - Number(a.id));
+    sortedAppointments.sort((a, b) => Number(b.id) - Number(a.id));
 
-    return activeAppointments[0] || null;
+    return sortedAppointments[0] || null;
 }
 
-// Sync latest appointment
+// SYNC LATEST APPOINTMENT
 function syncLatestAppointment(appointments) {
     const latest = getLatestAppointment(appointments);
 
@@ -110,25 +107,24 @@ function syncLatestAppointment(appointments) {
     return latest;
 }
 
-// Update status badge
-function updateStatusBadge(value) {
-    const appointmentStatus = String(value || "Confirmed").toLowerCase();
+// UPDATE STATUS BADGE
+function updateStatusBadge(appointment) {
+    const appointmentStatus =
+        String(appointment.status || "Confirmed").toLowerCase();
 
     status.className = "status";
 
-    if (appointmentStatus === "completed") {
-        status.textContent = "Completed";
-        status.classList.add("completed");
-    } else if (["cancelled", "canceled"].includes(appointmentStatus)) {
+    if (["cancelled", "canceled"].includes(appointmentStatus)) {
         status.textContent = "Cancelled";
         status.classList.add("cancelled");
     } else {
-        status.textContent = value || "Confirmed";
+        // Any existing non-cancelled appointment stays green.
+        status.textContent = "Confirmed";
         status.classList.add("confirmed");
     }
 }
 
-// Load appointment on dashboard
+// LOAD APPOINTMENT
 function loadAppointment() {
     const appointments = getAppointments();
     const appointment = syncLatestAppointment(appointments);
@@ -144,7 +140,7 @@ function loadAppointment() {
         let defaultPrice;
         let imagePath;
 
-        // Identify service
+        // IDENTIFY SERVICE
         if (service.includes("hair") && service.includes("beard")) {
             serviceLabel = "Hair + Beard";
             defaultPrice = 200;
@@ -161,7 +157,7 @@ function loadAppointment() {
             imagePath = "images/haircut.jpg";
         }
 
-        // Service details
+        // SERVICE DETAILS
         serviceName.textContent = serviceLabel;
 
         const price = Number(appointment.price);
@@ -173,7 +169,7 @@ function loadAppointment() {
 
         serviceImage.src = imagePath;
 
-        // Barber details
+        // BARBER DETAILS
         const selectedBarber = String(
             appointment.barber || appointment.barberName || ""
         ).trim();
@@ -193,17 +189,17 @@ function loadAppointment() {
             ? barberImages[barberKey]
             : "images/barber.jpg";
 
-        // Appointment details
+        // APPOINTMENT DETAILS
         details[0].textContent = appointment.date || "—";
         details[1].textContent = appointment.time || "—";
         details[2].textContent = appointment.queue
             ? "#" + String(appointment.queue).replace(/^#/, "")
             : "—";
 
-        // Appointment status
-        updateStatusBadge(appointment.status);
+        // STATUS
+        updateStatusBadge(appointment);
 
-        // Completed appointments cannot be cancelled
+        // CANCEL BUTTON
         const appointmentStatus =
             String(appointment.status || "").toLowerCase();
 
@@ -214,7 +210,7 @@ function loadAppointment() {
 
     } else {
 
-        // No appointment available
+        // NO APPOINTMENT
         serviceBarber.hidden = true;
 
         serviceName.textContent = "—";
@@ -232,10 +228,10 @@ function loadAppointment() {
     }
 }
 
-// Initial Load
+// INITIAL LOAD
 loadAppointment();
 
-// Cancel Appointment
+// CANCEL APPOINTMENT
 cancelButton.addEventListener("click", () => {
 
     const appointments = getAppointments();
@@ -246,11 +242,19 @@ cancelButton.addEventListener("click", () => {
         return;
     }
 
+    if (
+        ["cancelled", "canceled", "completed"].includes(
+            String(appointment.status || "").toLowerCase()
+        )
+    ) {
+        return;
+    }
+
     if (!confirm("Are you sure you want to cancel your appointment?")) {
         return;
     }
 
-    // Update appointment status instead of deleting it
+    // UPDATE APPOINTMENT STATUS
     const updatedAppointments = appointments.map(item => {
         if (String(item.id) === String(appointment.id)) {
             return {
@@ -262,13 +266,12 @@ cancelButton.addEventListener("click", () => {
         return item;
     });
 
-    // Save updated appointment history
     localStorage.setItem(
         "trimoraAppointments",
         JSON.stringify(updatedAppointments)
     );
 
-    // Show next available appointment
+    // REFRESH DASHBOARD
     loadAppointment();
 
     alert("Appointment cancelled successfully!");
