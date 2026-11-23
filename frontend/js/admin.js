@@ -148,7 +148,8 @@
             return;
         }
 
-        barbers.push({ name: name.trim(), email, password });
+        const image = prompt("Enter barber image path:", "images/barber.jpg") || "images/barber.jpg";
+        barbers.push({ name: name.trim(), email, password, image });
         saveData();
         showBarbers();
         updateSummary();
@@ -196,7 +197,14 @@
             return;
         }
 
-        services.push({ name: name.trim(), price: Number(price) });
+        const images = {
+            "haircut": "images/haircut.jpg",
+            "beard trim": "images/beard.jpg",
+            "hair + beard": "images/hair & beard.jpg"
+        };
+        const defaultImage = images[name.trim().toLowerCase()] || "images/haircut.jpg";
+        const image = prompt("Enter service image path:", defaultImage) || defaultImage;
+        services.push({ name: name.trim(), price: Number(price), image });
         saveData();
         showServices();
     });
