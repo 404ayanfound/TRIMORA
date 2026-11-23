@@ -36,7 +36,7 @@ header {
 }
 
 .logo img {
-    width: 180px;
+    width: 200px;
     display: block;
 }
 
@@ -236,7 +236,7 @@ td[colspan] {
 }
 
 .footer-brand img {
-    width: 185px;
+    width: 125px;
     margin-bottom: 3px;
 }
 
@@ -293,7 +293,7 @@ td[colspan] {
     }
 
     .logo img {
-        width: 130px;
+        width: 160px;
     }
 }
 
@@ -303,7 +303,7 @@ td[colspan] {
     }
 
     .logo img {
-        width: 105px;
+        width: 145px;
     }
 
     .admin-title {
