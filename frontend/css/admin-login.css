@@ -1,0 +1,14 @@
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;min-height:100vh;background:#0F172A;color:#F1F5F9;position:relative}
+body::before{content:"";position:fixed;inset:0;background:linear-gradient(rgba(15,23,42,.72),rgba(15,23,42,.86)),url("../images/hero.png") center/cover no-repeat;z-index:-1}
+header{height:75px;padding:12px 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #334155;background:rgba(15,23,42,.4);backdrop-filter:blur(12px)}
+.logo img{width:200px;display:block}.back-link{color:#c7d2fe;text-decoration:none;font-size:14px}.back-link:hover{color:#fff}
+.auth-page{min-height:calc(100vh - 75px);display:flex;align-items:center;justify-content:center;padding:35px 18px}
+.auth-card{width:100%;max-width:440px;padding:38px;background:rgba(30,41,59,.88);border:1px solid #475569;border-radius:18px;box-shadow:0 20px 55px rgba(0,0,0,.3)}
+.panel-label{color:#818CF8;font-size:12px;font-weight:bold;letter-spacing:2px;margin-bottom:12px}h1{font-size:30px;margin-bottom:10px}
+.intro,.login-note{color:#94A3B8;font-size:14px;line-height:1.6}form{margin-top:28px}label{display:block;font-size:14px;margin:17px 0 8px}
+input{width:100%;padding:13px 14px;border:1px solid #475569;border-radius:8px;background:#0F172A;color:#F1F5F9;font-size:14px;outline:none}input:focus{border-color:#818CF8}
+.password-box{display:flex;align-items:center;position:relative}.password-box input{padding-right:48px}.password-box button{position:absolute;right:8px;border:0;background:transparent;color:#F1F5F9;cursor:pointer;padding:7px}
+.login-btn{width:100%;margin-top:22px;padding:13px;border:0;border-radius:8px;background:#6366F1;color:#fff;font-size:15px;font-weight:bold;cursor:pointer}.login-btn:hover{background:#4F46E5}
+.error-message{min-height:18px;margin-top:9px;color:#FCA5A5;font-size:13px}.login-note{text-align:center;margin-top:22px;font-size:12px}
+@media(max-width:550px){.logo img{width:160px}.auth-card{padding:28px 22px}h1{font-size:26px}}@media(max-width:380px){.logo img{width:145px}.back-link{font-size:12px}}
