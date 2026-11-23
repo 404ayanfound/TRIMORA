@@ -52,28 +52,51 @@ function loadBookingOptions() {
 
     // Keep the original TRIMORA demo barbers visible.
     // Admin-created barber accounts are added alongside these names.
-    const defaultBarbers = ["Arjun", "Rahul", "Vikash"];
-    const bookingBarbers = [...defaultBarbers];
+    
+const defaultBarbers = [
+    { name: "Arjun", image: "images/arjun.jpg" },
+    { name: "Rahul", image: "images/rahul.jpg" },
+    { name: "Vikash", image: "images/vikash.jpg" }
+];
 
-    barbers.forEach(barber => {
-        if (!barber || typeof barber === "string" || !barber.name) return;
-        if (!bookingBarbers.some(name => name.toLowerCase() === barber.name.trim().toLowerCase())) {
-            bookingBarbers.push(barber.name.trim());
-        }
-    });
+const bookingBarbers = [...defaultBarbers];
 
-    bookingBarbers.forEach(name => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.dataset.name = name;
-        const image = document.createElement("img");
-        image.src = "images/barber.jpg";
-        image.alt = name;
-        const label = document.createElement("span");
-        label.textContent = name;
-        button.append(image, label);
-        barberBox.appendChild(button);
-    });
+barbers.forEach(barber => {
+    if (!barber || typeof barber === "string" || !barber.name) return;
+
+    const exists = bookingBarbers.some(item =>
+        item.name.toLowerCase() === barber.name.trim().toLowerCase()
+    );
+
+    if (!exists) {
+        bookingBarbers.push({
+            name: barber.name.trim(),
+            image: barber.image || "images/barber.jpg"
+        });
+    }
+});
+
+bookingBarbers.forEach(barber => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.name = barber.name;
+
+    const image = document.createElement("img");
+    image.src = barber.image;
+    image.alt = barber.name;
+
+    image.onerror = function () {
+        this.onerror = null;
+        this.src = "images/barber.jpg";
+    };
+
+    const label = document.createElement("span");
+    label.textContent = barber.name;
+
+    button.append(image, label);
+    barberBox.appendChild(button);
+});
+
 }
 loadBookingOptions();
 
