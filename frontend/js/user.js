@@ -10,12 +10,39 @@ const details = document.querySelectorAll(".appointment-details strong");
 const status = document.querySelector(".status");
 const cancelButton = document.querySelector(".cancel-btn");
 
+// Navigation Elements
+const menuToggle = document.getElementById("menu-toggle");
+const navMenu = document.getElementById("nav-menu");
+const logoutButton = document.getElementById("logout-btn");
+
 // Barber Images
 const barberImages = {
     arjun: "images/arjun.jpg",
     rahul: "images/rahul.jpg",
     vikash: "images/vikash.jpg"
 };
+
+// Mobile Menu
+menuToggle.addEventListener("click", () => {
+    const isOpen = navMenu.classList.toggle("active");
+
+    menuToggle.textContent = isOpen ? "✕" : "☰";
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+});
+
+// Close menu after selecting a link
+navMenu.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+        navMenu.classList.remove("active");
+        menuToggle.textContent = "☰";
+        menuToggle.setAttribute("aria-expanded", "false");
+    });
+});
+
+// Logout
+logoutButton.addEventListener("click", () => {
+    localStorage.removeItem("trimoraLoggedInUser");
+});
 
 // Read all appointments
 function getAppointments() {
@@ -81,6 +108,24 @@ function syncLatestAppointment(appointments) {
     }
 
     return latest;
+}
+
+// Update status badge
+function updateStatusBadge(value) {
+    const appointmentStatus = String(value || "Confirmed").toLowerCase();
+
+    status.className = "status";
+
+    if (appointmentStatus === "completed") {
+        status.textContent = "Completed";
+        status.classList.add("completed");
+    } else if (["cancelled", "canceled"].includes(appointmentStatus)) {
+        status.textContent = "Cancelled";
+        status.classList.add("cancelled");
+    } else {
+        status.textContent = value || "Confirmed";
+        status.classList.add("confirmed");
+    }
 }
 
 // Load appointment on dashboard
@@ -156,7 +201,7 @@ function loadAppointment() {
             : "—";
 
         // Appointment status
-        status.textContent = appointment.status || "Confirmed";
+        updateStatusBadge(appointment.status);
 
         // Completed appointments cannot be cancelled
         const appointmentStatus =
@@ -181,6 +226,8 @@ function loadAppointment() {
         });
 
         status.textContent = "No Appointment";
+        status.className = "status no-appointment";
+
         cancelButton.disabled = true;
     }
 }
