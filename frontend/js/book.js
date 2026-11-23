@@ -30,7 +30,7 @@ function loadBookingOptions() {
     let barbers = [];
     try { services = JSON.parse(localStorage.getItem("trimoraServices") || "[]"); } catch (error) {}
     try { barbers = JSON.parse(localStorage.getItem("trimoraBarbers") || "[]"); } catch (error) {}
-    if (!Array.isArray(services) || services.length === 0) services = [
+    if (!Array.isArray(services)) services = [
         { name: "Haircut", price: 150 }, { name: "Beard Trim", price: 100 }, { name: "Hair + Beard", price: 200 }
     ];
     if (!Array.isArray(barbers)) barbers = [];
@@ -38,6 +38,7 @@ function loadBookingOptions() {
     const barberBox = document.getElementById("barber-options");
     const images = { "haircut":"images/haircut 2.jpg", "beard trim":"images/beard 2.jpg", "hair + beard":"images/hair & beard 2.jpg" };
     serviceBox.innerHTML = "";
+    if (!services.length) serviceBox.textContent = "No services available. Please contact Admin.";
     services.forEach(service => {
         if (!service || !service.name) return;
         const button = document.createElement("button");
