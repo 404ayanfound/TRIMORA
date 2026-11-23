@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="css/user.css">
 </head>
 <body>
+
     <header>
         <a href="index.html" class="logo">
             <img src="images/logo.png" alt="TRIMORA Logo">
@@ -19,14 +21,20 @@
             <a href="index.html#contact">Contact</a>
         </nav>
 
-        <button class="menu-toggle" id="menu-toggle"
-            type="button" aria-label="Toggle navigation"
-            aria-expanded="false">☰</button>
+        <button
+            class="menu-toggle"
+            id="menu-toggle"
+            type="button"
+            aria-label="Toggle navigation"
+            aria-expanded="false">
+            ☰
+        </button>
 
         <a href="login.html" class="logout-btn" id="logout-btn">Logout</a>
     </header>
 
     <main class="dashboard">
+
         <section class="welcome">
             <p>TRIMORA DASHBOARD</p>
             <h1>Welcome 👋</h1>
@@ -34,6 +42,7 @@
         </section>
 
         <section class="appointment-card" id="my-appointment">
+
             <div class="card-header">
                 <div>
                     <p>UPCOMING APPOINTMENT</p>
@@ -43,9 +52,14 @@
             </div>
 
             <div class="service-barber" hidden>
+
                 <div class="info-item">
-                    <img src="images/haircut.jpg" alt="Selected service"
-                        class="detail-image" id="service-image">
+                    <img
+                        src="images/haircut.jpg"
+                        alt="Selected service"
+                        class="detail-image"
+                        id="service-image">
+
                     <div>
                         <span>SERVICE</span>
                         <strong id="service-name">—</strong>
@@ -54,13 +68,18 @@
                 </div>
 
                 <div class="info-item">
-                    <img src="images/barber.jpg" alt="Selected barber"
-                        class="detail-image" id="barber-image">
+                    <img
+                        src="images/barber.jpg"
+                        alt="Selected barber"
+                        class="detail-image"
+                        id="barber-image">
+
                     <div>
                         <span>BARBER</span>
                         <strong id="barber-name">—</strong>
                     </div>
                 </div>
+
             </div>
 
             <div class="appointment-details">
@@ -68,10 +87,12 @@
                     <span>DATE</span>
                     <strong>—</strong>
                 </div>
+
                 <div>
                     <span>TIME</span>
                     <strong>—</strong>
                 </div>
+
                 <div>
                     <span>QUEUE</span>
                     <strong>—</strong>
@@ -79,11 +100,14 @@
             </div>
 
             <button class="cancel-btn" disabled>Cancel Appointment</button>
+
         </section>
 
         <section class="quick-actions">
             <h2>Quick Actions</h2>
+
             <div class="action-container">
+
                 <a href="book.html" class="action-card">
                     <span>01</span>
                     <h3>Book Appointment</h3>
@@ -95,12 +119,16 @@
                     <h3>My Appointment</h3>
                     <p>View your appointment details.</p>
                 </a>
+
             </div>
         </section>
+
     </main>
 
     <footer class="footer">
+
         <div class="footer-content">
+
             <div class="footer-brand">
                 <img src="images/logo.png" alt="TRIMORA Logo">
                 <p>Smart barber appointments.<br>Better grooming, less waiting.</p>
@@ -123,13 +151,16 @@
                 <p>✉️ support@trimora.com</p>
                 <p>☎️ +91 98765 43210</p>
             </div>
+
         </div>
 
         <div class="footer-bottom">
             <p>© 2026 TRIMORA. All rights reserved.</p>
         </div>
+
     </footer>
 
     <script src="js/user.js"></script>
+
 </body>
 </html>
