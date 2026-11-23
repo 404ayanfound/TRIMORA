@@ -1,336 +1,243 @@
-/* ADMIN SESSION GUARD */
-if (localStorage.getItem("trimoraAdminLoggedIn") !== "true") {
-    window.location.replace("admin-login.html");
-}
-document.getElementById("admin-logout").addEventListener("click", event => {
-    event.preventDefault();
-    localStorage.removeItem("trimoraAdminLoggedIn");
-    window.location.href = "admin-login.html";
-});
-
-/* TRIMORA ADMIN DASHBOARD */
-
-// Load saved data
-let appointments = JSON.parse(
-    localStorage.getItem("trimoraAppointments")
-) || [];
-
-const singleAppointment = JSON.parse(
-    localStorage.getItem("trimoraAppointment")
-);
-
-if (appointments.length === 0 && singleAppointment) {
-    appointments = [singleAppointment];
-}
-
-let barbers = JSON.parse(
-    localStorage.getItem("trimoraBarbers")
-) || [];
-
-let services = JSON.parse(
-    localStorage.getItem("trimoraServices")
-) || [
-    { name: "Haircut", price: 150 },
-    { name: "Beard Trim", price: 100 },
-    { name: "Hair + Beard", price: 200 }
-];
-
-let paymentTotal = Number(
-    localStorage.getItem("trimoraPayments")
-) || 0;
-
-
-// Save data
-function saveData() {
-    localStorage.setItem(
-        "trimoraAppointments",
-        JSON.stringify(appointments)
-    );
-
-    localStorage.setItem(
-        "trimoraBarbers",
-        JSON.stringify(barbers)
-    );
-
-    localStorage.setItem(
-        "trimoraServices",
-        JSON.stringify(services)
-    );
-}
-
-
-// Dashboard summary
-function updateSummary() {
-    document.getElementById("total-count").textContent =
-        appointments.length;
-
-    document.getElementById("pending-count").textContent =
-        appointments.filter(item =>
-            ["pending", "confirmed"].includes(
-                (item.status || "Pending").toLowerCase()
-            )
-        ).length;
-
-    document.getElementById("barber-count").textContent =
-        barbers.length;
-
-    document.getElementById("payment-total").textContent =
-        "₹" + paymentTotal;
-}
-
-
-// Show appointments
-const filter = document.getElementById("appointment-filter");
-const table = document.getElementById("appointment-table");
-
-function showAppointments() {
-    const selectedStatus = filter.value;
-
-    const filtered = appointments.filter(item => {
-        const status = (item.status || "Pending").toLowerCase();
-
-        if (selectedStatus === "all") return true;
-
-        if (selectedStatus === "pending") {
-            return status === "pending" || status === "confirmed";
-        }
-
-        return status === selectedStatus;
-    });
-
-    table.innerHTML = "";
-
-    if (filtered.length === 0) {
-        table.innerHTML =
-            '<tr><td colspan="8">No appointments available.</td></tr>';
+(() => {
+    if (localStorage.getItem("trimoraAdminLoggedIn") !== "true") {
+        window.location.replace("admin-login.html");
         return;
     }
 
-    filtered.forEach(item => {
+    const $ = id => document.getElementById(id);
+    const read = (key, fallback) => {
+        try {
+            const data = JSON.parse(localStorage.getItem(key));
+            return data ?? fallback;
+        } catch {
+            return fallback;
+        }
+    };
+
+    let appointments = read("trimoraAppointments", []);
+    const oldAppointment = read("trimoraAppointment", null);
+    if (!appointments.length && oldAppointment) appointments = [oldAppointment];
+
+    let barbers = read("trimoraBarbers", []);
+    let services = read("trimoraServices", [
+        { name: "Haircut", price: 150 },
+        { name: "Beard Trim", price: 100 },
+        { name: "Hair + Beard", price: 200 }
+    ]);
+
+    const filter = $("appointment-filter");
+    const appointmentTable = $("appointment-table");
+    const barberList = $("barber-list");
+    const serviceList = $("service-list");
+    const customerTable = $("customer-table");
+
+    function saveData() {
+        localStorage.setItem("trimoraAppointments", JSON.stringify(appointments));
+        localStorage.setItem("trimoraBarbers", JSON.stringify(barbers));
+        localStorage.setItem("trimoraServices", JSON.stringify(services));
+    }
+
+    function updateSummary() {
+        $("total-count").textContent = appointments.length;
+        $("pending-count").textContent = appointments.filter(item =>
+            ["pending", "confirmed"].includes(String(item.status || "Pending").toLowerCase())
+        ).length;
+        $("barber-count").textContent = barbers.length;
+
+        const total = appointments
+            .filter(item => !["cancelled", "canceled"].includes(String(item.status).toLowerCase()))
+            .reduce((sum, item) => sum + (Number(item.price) || 0), 0);
+
+        $("payment-total").textContent = "₹" + total;
+    }
+
+    function addTableRow(table, values) {
         const row = document.createElement("tr");
-
-        const values = [
-            item.customer || "Customer",
-            item.service || "-",
-            item.barber || "-",
-            item.date || "-",
-            item.time || "-",
-            item.queue || "-",
-            "₹" + (item.price || 0),
-            item.status || "Pending"
-        ];
-
         values.forEach(value => {
             const cell = document.createElement("td");
             cell.textContent = value;
             row.appendChild(cell);
         });
-
         table.appendChild(row);
-    });
-}
-
-filter.addEventListener("change", showAppointments);
-
-// Add and display barbers
-const barberList = document.getElementById("barber-list");
-
-function showBarbers() {
-    barberList.innerHTML = "";
-
-    if (barbers.length === 0) {
-        barberList.textContent = "No barbers added yet.";
-        return;
     }
 
-    barbers.forEach((barber, index) => {
-        const card = document.createElement("div");
-        card.className = "stat-card";
+    function showAppointments() {
+        const selected = filter.value;
+        const filtered = appointments.filter(item => {
+            const status = String(item.status || "Pending").toLowerCase();
+            if (selected === "all") return true;
+            if (selected === "pending") return ["pending", "confirmed"].includes(status);
+            return status === selected;
+        });
 
-        const name = typeof barber === "string"
-            ? barber
-            : barber.name;
+        appointmentTable.innerHTML = "";
 
-        const details = document.createElement("div");
-        details.innerHTML = "";
+        if (!filtered.length) {
+            appointmentTable.innerHTML = '<tr><td colspan="8">No appointments available.</td></tr>';
+            return;
+        }
 
-        const barberName = document.createElement("strong");
-        barberName.textContent = name;
+        filtered.forEach(item => addTableRow(appointmentTable, [
+            item.customer || item.customerName || "Customer",
+            item.service || "-",
+            item.barber || "-",
+            item.date || "-",
+            item.time || "-",
+            item.queue || "-",
+            "₹" + (Number(item.price) || 0),
+            item.status || "Pending"
+        ]));
+    }
 
-        const barberEmail = document.createElement("p");
-        barberEmail.textContent = barber.email || "Email not available";
+    function showBarbers() {
+        barberList.innerHTML = "";
 
-        details.append(barberName, barberEmail);
+        if (!barbers.length) {
+            barberList.textContent = "No barbers added yet.";
+            return;
+        }
 
-        const removeBtn = document.createElement("button");
-        removeBtn.className = "add-btn";
-        removeBtn.textContent = "Remove";
+        barbers.forEach((barber, index) => {
+            const name = typeof barber === "string" ? barber : barber.name;
+            const card = document.createElement("div");
+            const details = document.createElement("div");
+            const title = document.createElement("strong");
+            const email = document.createElement("p");
+            const remove = document.createElement("button");
 
-        removeBtn.addEventListener("click", () => {
-            if (confirm("Remove " + name + "?")) {
+            card.className = "stat-card";
+            title.textContent = name || "Barber";
+            email.textContent = barber.email || "Email not available";
+            remove.className = "add-btn";
+            remove.textContent = "Remove";
+
+            details.append(title, email);
+            remove.addEventListener("click", () => {
+                if (!confirm("Remove " + name + "?")) return;
                 barbers.splice(index, 1);
                 saveData();
                 showBarbers();
                 updateSummary();
-            }
+            });
+
+            card.append(details, remove);
+            barberList.appendChild(card);
         });
-
-        card.append(details, removeBtn);
-        barberList.appendChild(card);
-    });
-}
-
-document.getElementById("add-barber-btn").addEventListener("click", () => {
-    const name = prompt("Enter barber name:");
-    if (!name || !name.trim()) return;
-
-    const email = prompt("Enter barber email:");
-    if (!email || !email.trim()) return;
-
-    const normalizedEmail = email.trim().toLowerCase();
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
-        alert("Please enter a valid email address.");
-        return;
     }
 
-    if (barbers.some(barber =>
-        typeof barber !== "string" &&
-        barber.email?.toLowerCase() === normalizedEmail
-    )) {
-        alert("This barber email already exists.");
-        return;
-    }
+    $("add-barber-btn").addEventListener("click", () => {
+        const name = prompt("Enter barber name:");
+        if (!name?.trim()) return;
 
-    const password = prompt("Create barber password (minimum 6 characters):");
+        const email = prompt("Enter barber email:")?.trim().toLowerCase();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
 
-    if (!password || password.length < 6) {
-        alert("Password must contain at least 6 characters.");
-        return;
-    }
+        if (barbers.some(item =>
+            typeof item === "object" && item.email?.toLowerCase() === email
+        )) {
+            alert("This barber email already exists.");
+            return;
+        }
 
-    barbers.push({
-        name: name.trim(),
-        email: normalizedEmail,
-        password: password
+        const password = prompt("Create barber password (minimum 6 characters):");
+        if (!password || password.length < 6) {
+            alert("Password must contain at least 6 characters.");
+            return;
+        }
+
+        barbers.push({ name: name.trim(), email, password });
+        saveData();
+        showBarbers();
+        updateSummary();
+        alert("Barber account created successfully!");
     });
 
-    saveData();
-    showBarbers();
-    updateSummary();
+    function showServices() {
+        serviceList.innerHTML = "";
 
-    alert("Barber account created successfully!");
-});
+        if (!services.length) {
+            serviceList.textContent = "No services added yet.";
+            return;
+        }
 
+        services.forEach((service, index) => {
+            const card = document.createElement("div");
+            const details = document.createElement("div");
+            const remove = document.createElement("button");
 
-// Add and display services
-const serviceList = document.getElementById("service-list");
+            card.className = "stat-card";
+            details.textContent = service.name + " - ₹" + service.price;
+            remove.className = "add-btn";
+            remove.textContent = "Remove";
 
-function showServices() {
-    serviceList.innerHTML = "";
-
-    services.forEach((service, index) => {
-        const card = document.createElement("div");
-        card.className = "stat-card";
-
-        const details = document.createElement("div");
-        details.textContent = service.name + " - ₹" + service.price;
-
-        const removeBtn = document.createElement("button");
-        removeBtn.className = "add-btn";
-        removeBtn.textContent = "Remove";
-
-        removeBtn.addEventListener("click", () => {
-            if (confirm("Remove " + service.name + "?")) {
+            remove.addEventListener("click", () => {
+                if (!confirm("Remove " + service.name + "?")) return;
                 services.splice(index, 1);
                 saveData();
                 showServices();
-            }
-        });
+            });
 
-        card.append(details, removeBtn);
-        serviceList.appendChild(card);
+            card.append(details, remove);
+            serviceList.appendChild(card);
+        });
+    }
+
+    $("add-service-btn").addEventListener("click", () => {
+        const name = prompt("Enter service name:");
+        if (!name?.trim()) return;
+
+        const price = prompt("Enter service price in rupees:");
+        if (price === null || price.trim() === "" ||
+            !Number.isFinite(Number(price)) || Number(price) < 0) {
+            alert("Please enter a valid price.");
+            return;
+        }
+
+        services.push({ name: name.trim(), price: Number(price) });
+        saveData();
+        showServices();
     });
 
-    if (services.length === 0) {
-        serviceList.textContent = "No services added yet.";
+    function showCustomers() {
+        const customers = {};
+
+        appointments.forEach(item => {
+            const name = item.customer || item.customerName || "Customer";
+            const email = item.email || "";
+            const key = email || name;
+
+            if (!customers[key]) customers[key] = { name, email, bookings: 0 };
+            customers[key].bookings++;
+        });
+
+        customerTable.innerHTML = "";
+        const list = Object.values(customers);
+
+        if (!list.length) {
+            customerTable.innerHTML = '<tr><td colspan="3">No customers available.</td></tr>';
+            return;
+        }
+
+        list.forEach(item => addTableRow(customerTable, [
+            item.name, item.email || "-", item.bookings
+        ]));
     }
-}
 
-document.getElementById("add-service-btn").addEventListener("click", () => {
-    const name = prompt("Enter service name:");
+    filter.addEventListener("change", showAppointments);
 
-    if (!name || !name.trim()) return;
-
-    const price = prompt("Enter service price in rupees:");
-
-    if (price === null || price.trim() === "" ||
-        !Number.isFinite(Number(price)) || Number(price) < 0) {
-        alert("Please enter a valid price.");
-        return;
-    }
-
-    services.push({
-        name: name.trim(),
-        price: Number(price)
+    $("admin-logout").addEventListener("click", event => {
+        event.preventDefault();
+        localStorage.removeItem("trimoraAdminLoggedIn");
+        window.location.href = "admin-login.html";
     });
 
     saveData();
+    updateSummary();
+    showAppointments();
+    showBarbers();
     showServices();
-});
-
-
-// Show customers from available bookings
-function showCustomers() {
-    const customerTable = document.getElementById("customer-table");
-    const customers = {};
-
-    appointments.forEach(item => {
-        const name = item.customer || "Customer";
-        const email = item.email || "";
-
-        const key = email || name;
-
-        if (!customers[key]) {
-            customers[key] = {
-                name,
-                email,
-                bookings: 0
-            };
-        }
-
-        customers[key].bookings++;
-    });
-
-    customerTable.innerHTML = "";
-
-    const customerList = Object.values(customers);
-
-    if (customerList.length === 0) {
-        customerTable.innerHTML =
-            '<tr><td colspan="3">No customers available.</td></tr>';
-        return;
-    }
-
-    customerList.forEach(customer => {
-        const row = document.createElement("tr");
-
-        [customer.name, customer.email || "-", customer.bookings]
-            .forEach(value => {
-                const cell = document.createElement("td");
-                cell.textContent = value;
-                row.appendChild(cell);
-            });
-
-        customerTable.appendChild(row);
-    });
-}
-
-
-// Initial display
-saveData();
-updateSummary();
-showAppointments();
-showBarbers();
-showServices();
-showCustomers();
+    showCustomers();
+})();
