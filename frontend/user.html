@@ -11,13 +11,19 @@
         <a href="index.html" class="logo">
             <img src="images/logo.png" alt="TRIMORA Logo">
         </a>
-        <nav>
+
+        <nav id="nav-menu">
             <a href="index.html">Home</a>
             <a href="index.html#services">Services</a>
             <a href="index.html#about">About</a>
             <a href="index.html#contact">Contact</a>
         </nav>
-        <a href="login.html" class="logout-btn">Logout</a>
+
+        <button class="menu-toggle" id="menu-toggle"
+            type="button" aria-label="Toggle navigation"
+            aria-expanded="false">☰</button>
+
+        <a href="login.html" class="logout-btn" id="logout-btn">Logout</a>
     </header>
 
     <main class="dashboard">
@@ -27,18 +33,19 @@
             <span>Manage your barber appointment easily.</span>
         </section>
 
-        <section class="appointment-card">
+        <section class="appointment-card" id="my-appointment">
             <div class="card-header">
                 <div>
                     <p>UPCOMING APPOINTMENT</p>
                     <h2>My Appointment</h2>
                 </div>
-                <span class="status">No Appointment</span>
+                <span class="status no-appointment">No Appointment</span>
             </div>
 
             <div class="service-barber" hidden>
                 <div class="info-item">
-                    <img src="images/haircut.jpg" alt="Selected service" class="detail-image" id="service-image">
+                    <img src="images/haircut.jpg" alt="Selected service"
+                        class="detail-image" id="service-image">
                     <div>
                         <span>SERVICE</span>
                         <strong id="service-name">—</strong>
@@ -47,7 +54,8 @@
                 </div>
 
                 <div class="info-item">
-                    <img src="images/barber.jpg" alt="Selected barber" class="detail-image" id="barber-image">
+                    <img src="images/barber.jpg" alt="Selected barber"
+                        class="detail-image" id="barber-image">
                     <div>
                         <span>BARBER</span>
                         <strong id="barber-name">—</strong>
@@ -81,7 +89,8 @@
                     <h3>Book Appointment</h3>
                     <p>Book a new appointment.</p>
                 </a>
-                <a href="#" class="action-card">
+
+                <a href="#my-appointment" class="action-card">
                     <span>02</span>
                     <h3>My Appointment</h3>
                     <p>View your appointment details.</p>
@@ -96,6 +105,7 @@
                 <img src="images/logo.png" alt="TRIMORA Logo">
                 <p>Smart barber appointments.<br>Better grooming, less waiting.</p>
             </div>
+
             <div class="footer-links">
                 <h3>Quick Links</h3>
                 <a href="index.html">Home</a>
@@ -103,9 +113,10 @@
                 <a href="index.html#about">About</a>
                 <a href="index.html#contact">Contact</a>
                 <a href="book.html">Book Appointment</a>
-                <a href="barber.html">barber dashboard</a>
-                <a href="admin.html">admin dashboard</a>
+                <a href="barber.html">Barber Dashboard</a>
+                <a href="admin.html">Admin Dashboard</a>
             </div>
+
             <div class="footer-contact">
                 <h3>Contact</h3>
                 <p>📍 Raipur, Chhattisgarh</p>
@@ -113,6 +124,7 @@
                 <p>☎️ +91 98765 43210</p>
             </div>
         </div>
+
         <div class="footer-bottom">
             <p>© 2026 TRIMORA. All rights reserved.</p>
         </div>
