@@ -28,7 +28,7 @@ navMenu.querySelectorAll("a").forEach(link => {
 function loadBookingOptions() {
     let services = [];
     let barbers = [];
-    try { services = JSON.parse(localStorage.getItem("trimoraServices") || "[]"); } catch (error) {}
+    try { services = JSON.parse(localStorage.getItem("trimoraServices") || '[{"name":"Haircut","price":150},{"name":"Beard Trim","price":100},{"name":"Hair + Beard","price":200}]'); } catch (error) {}
     try { barbers = JSON.parse(localStorage.getItem("trimoraBarbers") || "[]"); } catch (error) {}
     if (!Array.isArray(services)) services = [
         { name: "Haircut", price: 150 }, { name: "Beard Trim", price: 100 }, { name: "Hair + Beard", price: 200 }
