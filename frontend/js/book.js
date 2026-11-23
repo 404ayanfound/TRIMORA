@@ -187,11 +187,15 @@
     });
 
     function readAppointments() {
-        const saved = getSaved("trimoraAppointments", null);
-        if (saved) return saved;
+        const saved = getSaved("trimoraAppointments", []);
+        if (saved.length) return saved;
 
-        const old = getSaved("trimoraAppointment", null);
-        return old && !Array.isArray(old) ? [old] : [];
+        try {
+            const old = JSON.parse(localStorage.getItem("trimoraAppointment") || "null");
+            return old && !Array.isArray(old) ? [old] : [];
+        } catch {
+            return [];
+        }
     }
 
     function getCustomer() {
