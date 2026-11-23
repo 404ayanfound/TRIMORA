@@ -24,6 +24,41 @@ navMenu.querySelectorAll("a").forEach(link => {
 
 // SELECTION BUTTONS
 
+// LOAD ADMIN-MANAGED SERVICE AND BARBER OPTIONS
+function loadBookingOptions() {
+    let services = [];
+    let barbers = [];
+    try { services = JSON.parse(localStorage.getItem("trimoraServices") || "[]"); } catch (error) {}
+    try { barbers = JSON.parse(localStorage.getItem("trimoraBarbers") || "[]"); } catch (error) {}
+    if (!Array.isArray(services) || services.length === 0) services = [
+        { name: "Haircut", price: 150 }, { name: "Beard Trim", price: 100 }, { name: "Hair + Beard", price: 200 }
+    ];
+    if (!Array.isArray(barbers)) barbers = [];
+    const serviceBox = document.getElementById("service-options");
+    const barberBox = document.getElementById("barber-options");
+    const images = { "haircut":"images/haircut 2.jpg", "beard trim":"images/beard 2.jpg", "hair + beard":"images/hair & beard 2.jpg" };
+    serviceBox.innerHTML = "";
+    services.forEach(service => {
+        if (!service || !service.name) return;
+        const button = document.createElement("button");
+        button.type = "button"; button.dataset.name = service.name; button.dataset.price = Number(service.price) || 0;
+        const image = document.createElement("img"); image.src = images[String(service.name).toLowerCase()] || "images/haircut 2.jpg"; image.alt = service.name;
+        const label = document.createElement("span"); label.textContent = service.name;
+        const price = document.createElement("small"); price.textContent = "₹" + (Number(service.price) || 0);
+        label.appendChild(price); button.append(image, label); serviceBox.appendChild(button);
+    });
+    barberBox.innerHTML = "";
+    barbers.forEach(barber => {
+        if (!barber || typeof barber === "string" || !barber.name) return;
+        const button = document.createElement("button"); button.type = "button"; button.dataset.name = barber.name;
+        const image = document.createElement("img"); image.src = "images/barber.jpg"; image.alt = barber.name;
+        const label = document.createElement("span"); label.textContent = barber.name;
+        button.append(image, label); barberBox.appendChild(button);
+    });
+    if (!barberBox.children.length) barberBox.textContent = "No barbers available. Please contact Admin to add a barber account.";
+}
+loadBookingOptions();
+
 const serviceButtons = document.querySelectorAll(".service-options button");
 const barberButtons = document.querySelectorAll(".barber-options button");
 const timeButtons = document.querySelectorAll(".time button");
@@ -224,11 +259,17 @@ confirmButton.addEventListener("click", () => {
     // Appointment details
 
     const customerName = getCustomer();
+    let customerEmail = "";
+    try {
+        const loggedInUser = JSON.parse(localStorage.getItem("trimoraLoggedInUser") || "null");
+        customerEmail = loggedInUser && loggedInUser.email ? loggedInUser.email : "";
+    } catch (error) {}
 
     const appointment = {
         id: Date.now(),
         customer: customerName,
         customerName: customerName,
+        email: customerEmail,
         service: serviceName,
         price: price,
         barber: barberName,
