@@ -1,3 +1,13 @@
+/* ADMIN SESSION GUARD */
+if (localStorage.getItem("trimoraAdminLoggedIn") !== "true") {
+    window.location.replace("admin-login.html");
+}
+document.getElementById("admin-logout").addEventListener("click", event => {
+    event.preventDefault();
+    localStorage.removeItem("trimoraAdminLoggedIn");
+    window.location.href = "admin-login.html";
+});
+
 /* TRIMORA ADMIN DASHBOARD */
 
 // Load saved data
