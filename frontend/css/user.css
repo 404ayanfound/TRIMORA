@@ -1,7 +1,12 @@
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -28,6 +33,7 @@ header {
     gap: 20px;
     border-bottom: 1px solid #334155;
     background: rgba(15, 23, 42, 0.25);
+    position: relative;
 }
 
 .logo {
@@ -38,7 +44,7 @@ header {
 }
 
 .logo img {
-    width: 180px;
+    width: 200px;
     height: auto;
     display: block;
 }
@@ -57,6 +63,16 @@ nav a {
 
 nav a:hover {
     color: #818CF8;
+}
+
+.menu-toggle {
+    display: none;
+    border: none;
+    background: transparent;
+    color: #F1F5F9;
+    font-size: 27px;
+    cursor: pointer;
+    padding: 5px;
 }
 
 .logout-btn {
@@ -121,6 +137,7 @@ nav a:hover {
     border: 1px solid #334155;
     border-radius: 14px;
     padding: 35px;
+    scroll-margin-top: 20px;
 }
 
 .card-header {
@@ -138,9 +155,29 @@ nav a:hover {
 .status {
     padding: 7px 14px;
     border-radius: 20px;
-    background: #097e0b;
-    color: white;
     font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status.confirmed {
+    background: rgba(34, 197, 94, 0.18);
+    color: #86EFAC;
+}
+
+.status.completed {
+    background: rgba(59, 130, 246, 0.18);
+    color: #93C5FD;
+}
+
+.status.cancelled {
+    background: rgba(239, 68, 68, 0.18);
+    color: #FCA5A5;
+}
+
+.status.no-appointment {
+    background: rgba(148, 163, 184, 0.16);
+    color: #CBD5E1;
 }
 
 /* SERVICE AND BARBER */
@@ -364,15 +401,38 @@ nav a:hover {
     header {
         min-height: 75px;
         padding: 0 5%;
-        gap: 10px;
+        gap: 12px;
     }
 
     .logo img {
-        width: 135px;
+        width: 160px;
+    }
+
+    .menu-toggle {
+        display: block;
+        margin-left: auto;
     }
 
     nav {
         display: none;
+        position: absolute;
+        top: 75px;
+        left: 0;
+        width: 100%;
+        padding: 22px 5%;
+        background: #0F172A;
+        border-bottom: 1px solid #334155;
+        flex-direction: column;
+        gap: 20px;
+        z-index: 100;
+    }
+
+    nav.active {
+        display: flex;
+    }
+
+    nav a {
+        font-size: 15px;
     }
 
     .logout-btn {
@@ -434,9 +494,18 @@ nav a:hover {
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 380px) {
     .logo img {
-        width: 115px;
+        width: 145px;
+    }
+
+    .logout-btn {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .menu-toggle {
+        font-size: 24px;
     }
 
     .welcome h1 {
