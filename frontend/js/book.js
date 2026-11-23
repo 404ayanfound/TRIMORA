@@ -1,18 +1,12 @@
-/* HAMBURGER MENU */
 
 const menuToggle = document.getElementById("menu-toggle");
 const navMenu = document.getElementById("nav-menu");
 
 menuToggle.addEventListener("click", () => {
-    navMenu.classList.toggle("active");
-
-    const isOpen = navMenu.classList.contains("active");
-
-    menuToggle.textContent = isOpen ? "✕" : "☰";
-    menuToggle.setAttribute("aria-expanded", isOpen);
+    const open = navMenu.classList.toggle("active");
+    menuToggle.textContent = open ? "✕" : "☰";
+    menuToggle.setAttribute("aria-expanded", open);
 });
-
-// Close menu after clicking a link
 
 navMenu.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", () => {
@@ -22,61 +16,76 @@ navMenu.querySelectorAll("a").forEach(link => {
     });
 });
 
-// SELECTION BUTTONS
+const serviceBox = document.getElementById("service-options");
+const barberBox = document.getElementById("barber-options");
 
-// LOAD ADMIN-MANAGED SERVICE AND BARBER OPTIONS
-function loadBookingOptions() {
-    let services = [];
-    let barbers = [];
-    try { services = JSON.parse(localStorage.getItem("trimoraServices") || '[{"name":"Haircut","price":150},{"name":"Beard Trim","price":100},{"name":"Hair + Beard","price":200}]'); } catch (error) {}
-    try { barbers = JSON.parse(localStorage.getItem("trimoraBarbers") || "[]"); } catch (error) {}
-    if (!Array.isArray(services)) services = [
-        { name: "Haircut", price: 150 }, { name: "Beard Trim", price: 100 }, { name: "Hair + Beard", price: 200 }
-    ];
-    if (!Array.isArray(barbers)) barbers = [];
-    const serviceBox = document.getElementById("service-options");
-    const barberBox = document.getElementById("barber-options");
-    const images = { "haircut":"images/haircut 2.jpg", "beard trim":"images/beard 2.jpg", "hair + beard":"images/hair & beard 2.jpg" };
-    serviceBox.innerHTML = "";
-    if (!services.length) serviceBox.textContent = "No services available. Please contact Admin.";
-    services.forEach(service => {
-        if (!service || !service.name) return;
-        const button = document.createElement("button");
-        button.type = "button"; button.dataset.name = service.name; button.dataset.price = Number(service.price) || 0;
-        const image = document.createElement("img"); image.src = images[String(service.name).toLowerCase()] || "images/haircut 2.jpg"; image.alt = service.name;
-        const label = document.createElement("span"); label.textContent = service.name;
-        const price = document.createElement("small"); price.textContent = "₹" + (Number(service.price) || 0);
-        label.appendChild(price); button.append(image, label); serviceBox.appendChild(button);
-    });
-    barberBox.innerHTML = "";
+const defaultServices = [
+    { name: "Haircut", price: 150 },
+    { name: "Beard Trim", price: 100 },
+    { name: "Hair + Beard", price: 200 }
+];
 
-    // Keep the original TRIMORA demo barbers visible.
-    // Admin-created barber accounts are added alongside these names.
-    
 const defaultBarbers = [
     { name: "Arjun", image: "images/arjun.jpg" },
     { name: "Rahul", image: "images/rahul.jpg" },
     { name: "Vikash", image: "images/vikash.jpg" }
 ];
 
-const bookingBarbers = [...defaultBarbers];
+function getSaved(key, fallback) {
+    try {
+        const data = JSON.parse(localStorage.getItem(key));
+        return Array.isArray(data) ? data : fallback;
+    } catch {
+        return fallback;
+    }
+}
 
-barbers.forEach(barber => {
-    if (!barber || typeof barber === "string" || !barber.name) return;
+const services = getSaved("trimoraServices", defaultServices);
+const barbers = [...defaultBarbers];
 
-    const exists = bookingBarbers.some(item =>
+getSaved("trimoraBarbers", []).forEach(barber => {
+    if (!barber || typeof barber !== "object" || !barber.name) return;
+
+    if (!barbers.some(item =>
         item.name.toLowerCase() === barber.name.trim().toLowerCase()
-    );
-
-    if (!exists) {
-        bookingBarbers.push({
+    )) {
+        barbers.push({
             name: barber.name.trim(),
             image: barber.image || "images/barber.jpg"
         });
     }
 });
 
-bookingBarbers.forEach(barber => {
+const serviceImages = {
+    "haircut": "images/haircut 2.jpg",
+    "beard trim": "images/beard 2.jpg",
+    "hair + beard": "images/hair & beard 2.jpg"
+};
+
+services.forEach(service => {
+    if (!service || !service.name) return;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.name = service.name;
+    button.dataset.price = Number(service.price) || 0;
+
+    const image = document.createElement("img");
+    image.src = service.image || serviceImages[service.name.toLowerCase()] || "images/haircut.jpg";
+    image.alt = service.name;
+
+    const label = document.createElement("span");
+    label.textContent = service.name;
+
+    const price = document.createElement("small");
+    price.textContent = "₹" + (Number(service.price) || 0);
+
+    label.appendChild(price);
+    button.append(image, label);
+    serviceBox.appendChild(button);
+});
+
+barbers.forEach(barber => {
     const button = document.createElement("button");
     button.type = "button";
     button.dataset.name = barber.name;
@@ -84,7 +93,6 @@ bookingBarbers.forEach(barber => {
     const image = document.createElement("img");
     image.src = barber.image;
     image.alt = barber.name;
-
     image.onerror = function () {
         this.onerror = null;
         this.src = "images/barber.jpg";
@@ -97,29 +105,37 @@ bookingBarbers.forEach(barber => {
     barberBox.appendChild(button);
 });
 
-}
-loadBookingOptions();
+serviceBox.addEventListener("click", event => {
+    const button = event.target.closest("button");
+    if (!button) return;
 
-const serviceButtons = document.querySelectorAll(".service-options button");
-const barberButtons = document.querySelectorAll(".barber-options button");
-const timeButtons = document.querySelectorAll(".time button");
+    serviceBox.querySelectorAll("button").forEach(item =>
+        item.classList.remove("selected")
+    );
 
-// Summary elements
+    button.classList.add("selected");
+    document.getElementById("summary-service").textContent =
+        `Service: ${button.dataset.name} - ₹${button.dataset.price}`;
+});
 
-const summaryService = document.getElementById("summary-service");
-const summaryBarber = document.getElementById("summary-barber");
-const summaryDate = document.getElementById("summary-date");
-const summaryTime = document.getElementById("summary-time");
+barberBox.addEventListener("click", event => {
+    const button = event.target.closest("button");
+    if (!button) return;
 
-// Input elements
+    barberBox.querySelectorAll("button").forEach(item =>
+        item.classList.remove("selected")
+    );
+
+    button.classList.add("selected");
+    document.getElementById("summary-barber").textContent =
+        "Barber: " + button.dataset.name;
+});
 
 const dateInput = document.getElementById("appointment-date");
+const timeButtons = document.querySelectorAll(".time button");
 const confirmButton = document.getElementById("confirm-booking");
 
-// Prevent past dates
-
 const today = new Date();
-
 const localToday = [
     today.getFullYear(),
     String(today.getMonth() + 1).padStart(2, "0"),
@@ -128,45 +144,13 @@ const localToday = [
 
 dateInput.min = localToday;
 
-// SERVICE SELECTION
-
-serviceButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        serviceButtons.forEach(btn => btn.classList.remove("selected"));
-        button.classList.add("selected");
-
-        summaryService.textContent =
-            "Service: " + button.dataset.name +
-            " - ₹" + button.dataset.price;
-    });
-});
-
-// BARBER SELECTION
-
-barberButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        barberButtons.forEach(btn => btn.classList.remove("selected"));
-        button.classList.add("selected");
-
-        summaryBarber.textContent =
-            "Barber: " + button.dataset.name;
-    });
-});
-
-// DATE SELECTION
-
 dateInput.addEventListener("change", () => {
-    summaryDate.textContent = dateInput.value
-        ? "Date: " + dateInput.value
-        : "Date: Not Selected";
-
-    // Reset previous time selection
+    document.getElementById("summary-date").textContent =
+        dateInput.value ? "Date: " + dateInput.value : "Date: Not Selected";
 
     timeButtons.forEach(button => button.classList.remove("selected"));
-    summaryTime.textContent = "Time: Not Selected";
+    document.getElementById("summary-time").textContent = "Time: Not Selected";
 });
-
-// TIME SELECTION
 
 timeButtons.forEach(button => {
     button.addEventListener("click", () => {
@@ -175,171 +159,108 @@ timeButtons.forEach(button => {
             return;
         }
 
-        timeButtons.forEach(btn => btn.classList.remove("selected"));
+        timeButtons.forEach(item => item.classList.remove("selected"));
         button.classList.add("selected");
 
-        summaryTime.textContent =
+        document.getElementById("summary-time").textContent =
             "Time: " + button.textContent.trim();
     });
 });
 
-// READ ALL SAVED APPOINTMENTS
-
 function readAppointments() {
     try {
-        const saved = JSON.parse(
-            localStorage.getItem("trimoraAppointments") || "[]"
-        );
-
-        if (Array.isArray(saved)) {
-            return saved;
-        }
-    } catch (error) {
-        console.error("Could not read appointments:", error);
-    }
-
-    // Old single-booking compatibility
+        const saved = JSON.parse(localStorage.getItem("trimoraAppointments") || "[]");
+        if (Array.isArray(saved)) return saved;
+    } catch {}
 
     try {
-        const oldBooking = JSON.parse(
-            localStorage.getItem("trimoraAppointment") || "null"
-        );
-
-        return oldBooking ? [oldBooking] : [];
-    } catch (error) {
+        const old = JSON.parse(localStorage.getItem("trimoraAppointment") || "null");
+        return old ? [old] : [];
+    } catch {
         return [];
     }
 }
 
-// GET LOGGED-IN CUSTOMER
-
 function getCustomer() {
     try {
-        const user = JSON.parse(
-            localStorage.getItem("trimoraLoggedInUser") || "null"
-        );
+        const user = JSON.parse(localStorage.getItem("trimoraLoggedInUser") || "null");
+        if (user && user.name) return user.name;
+    } catch {}
 
-        if (user && user.name) {
-            return user.name;
-        }
-    } catch (error) {
-        console.error("Could not read logged-in user:", error);
-    }
-
-    return (
-        localStorage.getItem("trimoraCustomerName") ||
+    return localStorage.getItem("trimoraCustomerName") ||
         localStorage.getItem("customerName") ||
         localStorage.getItem("userName") ||
-        localStorage.getItem("trimoraUserName") ||
-        "Customer"
-    );
+        "Customer";
 }
 
-// GENERATE QUEUE NUMBER
-
-function generateQueue(appointments, barberName, date) {
-    const sameBarberAppointments = appointments.filter(item =>
-        String(item.barber || item.barberName || "").trim().toLowerCase() ===
-            barberName.trim().toLowerCase() &&
+function generateQueue(appointments, barber, date) {
+    const count = appointments.filter(item =>
+        String(item.barber || item.barberName || "").toLowerCase() === barber.toLowerCase() &&
         item.date === date &&
-        !["cancelled", "canceled"].includes(
-            String(item.status || "").toLowerCase()
-        )
-    );
+        !["cancelled", "canceled"].includes(String(item.status).toLowerCase())
+    ).length;
 
-    return String(sameBarberAppointments.length + 1).padStart(2, "0");
+    return String(count + 1).padStart(2, "0");
 }
-
-// CONFIRM BOOKING
 
 confirmButton.addEventListener("click", () => {
-
-    const service = document.querySelector(".service-options .selected");
-    const barber = document.querySelector(".barber-options .selected");
-    const selectedTime = document.querySelector(".time .selected");
+    const service = serviceBox.querySelector(".selected");
+    const barber = barberBox.querySelector(".selected");
+    const time = document.querySelector(".time .selected");
     const date = dateInput.value;
 
-    // Validate all selections
-
-    if (!service || !barber || !date || !selectedTime) {
+    if (!service || !barber || !date || !time) {
         alert("Please select service, barber, date and time.");
         return;
     }
-
-    // Prevent past date
 
     if (date < localToday) {
         alert("Please select today or a future date.");
         return;
     }
 
-    const serviceName = service.dataset.name;
-    const barberName = barber.dataset.name;
-    const price = Number(service.dataset.price);
-    const time = selectedTime.textContent.trim();
-
     const appointments = readAppointments();
-
-    // Prevent duplicate active booking
+    const barberName = barber.dataset.name;
+    const selectedTime = time.textContent.trim();
 
     const alreadyBooked = appointments.some(item =>
-        String(item.barber || item.barberName || "").trim().toLowerCase() ===
-            barberName.trim().toLowerCase() &&
+        String(item.barber || item.barberName || "").toLowerCase() === barberName.toLowerCase() &&
         item.date === date &&
-        String(item.time || "").trim() === time &&
-        !["cancelled", "canceled", "completed"].includes(
-            String(item.status || "").toLowerCase()
-        )
+        String(item.time || "").trim() === selectedTime &&
+        !["cancelled", "canceled", "completed"].includes(String(item.status).toLowerCase())
     );
 
     if (alreadyBooked) {
-        alert("This barber already has a booking at that date and time. Please select another time.");
+        alert("This barber already has a booking at that date and time.");
         return;
     }
 
-    // Appointment details
+    let email = "";
 
-    const customerName = getCustomer();
-    let customerEmail = "";
     try {
-        const loggedInUser = JSON.parse(localStorage.getItem("trimoraLoggedInUser") || "null");
-        customerEmail = loggedInUser && loggedInUser.email ? loggedInUser.email : "";
-    } catch (error) {}
+        const user = JSON.parse(localStorage.getItem("trimoraLoggedInUser") || "null");
+        email = user?.email || "";
+    } catch {}
 
     const appointment = {
         id: Date.now(),
-        customer: customerName,
-        customerName: customerName,
-        email: customerEmail,
-        service: serviceName,
-        price: price,
+        customer: getCustomer(),
+        customerName: getCustomer(),
+        email,
+        service: service.dataset.name,
+        price: Number(service.dataset.price),
         barber: barberName,
-        date: date,
-        time: time,
+        date,
+        time: selectedTime,
         status: "Confirmed",
         queue: generateQueue(appointments, barberName, date)
     };
 
-    // Save all appointments
-
     appointments.push(appointment);
 
-    localStorage.setItem(
-        "trimoraAppointments",
-        JSON.stringify(appointments)
-    );
+    localStorage.setItem("trimoraAppointments", JSON.stringify(appointments));
+    localStorage.setItem("trimoraAppointment", JSON.stringify(appointment));
 
-    // Keep latest appointment for existing dashboard
-
-    localStorage.setItem(
-        "trimoraAppointment",
-        JSON.stringify(appointment)
-    );
-
-    alert(
-        "Appointment confirmed successfully!\nYour Queue Number: #" +
-        appointment.queue
-    );
-
+    alert("Appointment confirmed successfully!\nYour Queue Number: #" + appointment.queue);
     window.location.href = "user.html";
 });
